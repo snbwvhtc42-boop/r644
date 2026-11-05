@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apple Intelligence 头号玩家：20题闯关榜</title>
+<style>
+:root{--bg:#f5f5f7;--card:#ffffff;--text:#1d1d1f;--subtext:#6e6e73;--accent:#0071e3;--accent-soft:#e8f2ff;--multi:#af52de;--multi-soft:#f5ebff;--success:#28cd41;--danger:#ff3b30;--border:#d2d2d7;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",sans-serif;}
+body{background:var(--bg);color:var(--text);line-height:1.55;padding:24px 16px 60px;font-size:16px;}
+#confettiCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;}
+.container{max-width:820px;margin:0 auto;}
+.hero{background:linear-gradient(135deg,#1d1d1f 0%,#2c2c2e 100%);color:#fff;border-radius:20px;padding:30px 26px;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,0.08);position:relative;}
+.hero-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+.hero-top-actions{display:flex;align-items:center;gap:8px;}
+.badge{display:inline-block;background:rgba(255,255,255,0.16);font-size:14px;font-weight:600;padding:5px 12px;border-radius:999px;}
+.sound-toggle{background:rgba(255,255,255,0.16);color:#fff;border:1px solid rgba(255,255,255,0.25);font-size:14px;font-weight:600;padding:5px 14px;border-radius:999px;cursor:pointer;}
+.sound-toggle:hover{background:rgba(255,255,255,0.26);}
+.qr-btn{background:#0071e3;color:#fff;border:none;font-size:14px;font-weight:600;padding:6px 14px;border-radius:999px;cursor:pointer;}
+.qr-btn:hover{background:#0077ed;}
+.hero h1{font-size:28px;margin-bottom:10px;}
+.hero p{font-size:16px;color:#d2d2d7;}
+.player-bar{background:var(--card);border-radius:16px;padding:16px 22px;margin-bottom:16px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;border:1px solid rgba(0,0,0,0.05);box-shadow:0 2px 10px rgba(0,0,0,0.03);}
+.player-input-group{display:flex;align-items:center;gap:10px;flex:1;min-width:240px;}
+.player-input-group label{font-size:16px;font-weight:600;white-space:nowrap;}
+.input-text{flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:10px;font-size:16px;outline:none;}
+.input-text:focus{border-color:var(--accent);}
+.mode-switch{display:inline-flex;background:#f0f0f3;padding:4px;border-radius:11px;gap:4px;}
+.mode-btn{border:none;background:transparent;color:#6e6e73;font-size:15px;font-weight:600;padding:8px 16px;border-radius:8px;cursor:pointer;transition:all 0.18s ease;white-space:nowrap;}
+.mode-btn.active{background:#ffffff;color:var(--accent);box-shadow:0 2px 6px rgba(0,0,0,0.08);}
+.sticky-bar{position:sticky;top:12px;z-index:10;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:14px;}
+.progress-text,.timer-text{font-size:16px;font-weight:600;white-space:nowrap;}
+.timer-text{color:var(--accent);}
+.progress-track{flex:1;height:10px;background:#e5e5ea;border-radius:999px;overflow:hidden;}
+.progress-fill{height:100%;width:0%;background:var(--accent);transition:width 0.25s ease;}
+.leaderboard-card{background:var(--card);border-radius:18px;padding:22px;margin-bottom:20px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 4px 16px rgba(0,0,0,0.04);}
+.lb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.lb-title-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.lb-header h2{font-size:21px;font-weight:700;}
+.lb-privacy-tag{font-size:13px;font-weight:600;background:#f0f0f5;color:var(--subtext);padding:4px 10px;border-radius:999px;}
+.lb-privacy-tag.admin-active{background:#ffeceb;color:var(--danger);}
+.lb-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.btn-small{background:#f5f5f7;border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:14px;font-weight:600;cursor:pointer;color:var(--text);}
+.btn-small:hover{background:#e5e5ea;}
+.btn-small.admin-btn{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);}
+.lb-table{width:100%;border-collapse:collapse;font-size:16px;}
+.lb-table th{text-align:left;color:var(--subtext);font-weight:600;padding:10px;border-bottom:1px solid #e5e5ea;font-size:14px;}
+.lb-table td{padding:12px 10px;border-bottom:1px solid #f0f0f2;}
+.rank-badge{display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;border-radius:50%;font-weight:700;font-size:14px;background:#e5e5ea;color:var(--text);}
+.rank-1{background:#ffd60a;color:#1d1d1f;}
+.rank-2{background:#d1d1d6;color:#1d1d1f;}
+.rank-3{background:#f5b076;color:#1d1d1f;}
+.empty-lb{text-align:center;padding:20px;font-size:15px;color:var(--subtext);}
+.lb-footer-note{margin-top:10px;font-size:14px;color:var(--subtext);text-align:right;}
+.stage-banner{margin:28px 0 14px;padding:14px 20px;border-radius:14px;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:space-between;}
+.stage-banner-1{background:#dcebff;color:#004b99;border-left:6px solid #0071e3;}
+.stage-banner-2{background:#ffe8cc;color:#994400;border-left:6px solid #ff9500;}
+.stage-banner-3{background:#d8f5e0;color:#0f5c29;border-left:6px solid #28cd41;}
+.stage-banner-4{background:#eadcff;color:#511f99;border-left:6px solid #af52de;}
+.q-card{background:var(--card);border-radius:18px;padding:24px;margin-bottom:18px;border:1.5px solid rgba(0,0,0,0.06);box-shadow:0 3px 12px rgba(0,0,0,0.03);transition:transform 0.15s ease;}
+.q-card.stage-theme-1{background:#eef6ff;border-color:#cde3ff;}
+.q-card.stage-theme-1 .q-stage{color:#005bb5;}
+.q-card.stage-theme-2{background:#fff6eb;border-color:#ffdcb0;}
+.q-card.stage-theme-2 .q-stage{color:#b85000;}
+.q-card.stage-theme-3{background:#eefbf2;border-color:#c2edd0;}
+.q-card.stage-theme-3 .q-stage{color:#146c32;}
+.q-card.stage-theme-4{background:#f6f0ff;border-color:#dec9ff;}
+.q-card.stage-theme-4 .q-stage{color:#6929b8;}
+.q-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+.q-stage{font-size:14px;font-weight:700;color:var(--accent);}
+.q-type-tag{font-size:13px;font-weight:700;padding:4px 10px;border-radius:6px;}
+.tag-single{background:rgba(255,255,255,0.85);color:var(--accent);border:1px solid rgba(0,113,227,0.25);}
+.tag-multi{background:#af52de;color:#ffffff;}
+.q-title{font-size:19px;font-weight:600;margin-bottom:14px;line-height:1.45;}
+.q-image-wrap{margin-bottom:16px;text-align:center;}
+.q-image{max-width:100%;max-height:360px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 4px 14px rgba(0,0,0,0.06);object-fit:contain;background:#fff;cursor:zoom-in;}
+.q-admin-img-bar{display:none;margin-bottom:12px;gap:8px;align-items:center;}
+.options{display:flex;flex-direction:column;gap:12px;}
+.option-btn{text-align:left;background:rgba(255,255,255,0.92);border:2px solid rgba(0,0,0,0.05);border-radius:12px;padding:14px 16px;font-size:16px;line-height:1.45;color:var(--text);cursor:pointer;transition:all 0.15s ease;}
+.option-btn:hover{background:#ffffff;border-color:rgba(0,0,0,0.15);}
+.option-btn.selected{background:#ffffff;border-color:var(--accent);color:#0051a8;font-weight:600;box-shadow:0 2px 8px rgba(0,113,227,0.15);}
+.option-btn.selected-multi{background:#ffffff;border-color:var(--multi);color:#7b2cbf;font-weight:600;box-shadow:0 2px 8px rgba(175,82,222,0.18);}
+.option-btn.correct{background:#e3fbe8;border-color:var(--success);color:#14532d;font-weight:600;}
+.option-btn.wrong{background:#ffeceb;border-color:var(--danger);color:#7f1d1d;}
+.instant-confirm-btn{margin-top:12px;background:var(--multi);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:15px;font-weight:600;cursor:pointer;}
+.instant-confirm-btn:hover{opacity:0.92;}
+.explain-box{display:none;margin-top:14px;padding:14px 16px;border-radius:12px;background:rgba(255,255,255,0.94);border:1px solid rgba(0,0,0,0.08);font-size:15px;line-height:1.6;color:#3a3a3c;}
+.explain-box strong{color:var(--text);}
+.submit-wrap{text-align:center;margin-top:32px;}
+.btn-primary{background:var(--accent);color:#fff;border:none;border-radius:999px;padding:16px 40px;font-size:18px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(0,113,227,0.3);}
+.btn-primary:hover{background:#0077ed;}
+.result-modal{display:none;background:var(--card);border-radius:20px;padding:30px 26px;margin-bottom:24px;text-align:center;border:2px solid var(--accent);box-shadow:0 12px 32px rgba(0,0,0,0.08);}
+.result-modal.perfect-score{border:2px solid #ff9500;background:linear-gradient(180deg,#fffdf8 0%,#ffffff 100%);box-shadow:0 16px 40px rgba(255,149,0,0.18);}
+.score-num{font-size:64px;font-weight:800;color:var(--accent);line-height:1.1;margin:12px 0;}
+.result-modal.perfect-score .score-num{background:linear-gradient(90deg,#ff2d55,#ff9500,#34c759,#0071e3,#af52de);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.rank-title{font-size:23px;font-weight:700;margin-bottom:10px;}
+.rank-desc{font-size:16px;color:var(--subtext);margin-bottom:22px;}
+.result-btn-group{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+.btn-celebrate{background:linear-gradient(135deg,#ff2d55,#ff9500);color:#fff;border:none;border-radius:999px;padding:15px 28px;font-size:17px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(255,45,85,0.3);}
+.img-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:10000;align-items:center;justify-content:center;padding:24px;cursor:zoom-out;}
+.img-lightbox img{max-width:94vw;max-height:90vh;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,0.5);}
+.qr-modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:10001;align-items:center;justify-content:center;padding:20px;}
+.qr-modal-box{background:#fff;border-radius:22px;padding:28px 24px;max-width:400px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.25);}
+.qr-modal-box h3{font-size:20px;margin-bottom:6px;}
+.qr-modal-box p{font-size:14px;color:var(--subtext);margin-bottom:16px;}
+.qr-modal-box img{width:240px;height:240px;border-radius:12px;border:1px solid var(--border);padding:8px;margin-bottom:12px;}
+.qr-url-box{font-size:14px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:8px 12px;border-radius:8px;margin-bottom:16px;word-break:break-all;}
+</style>
+</head>
+<body>
+<canvas id="confettiCanvas"></canvas>
+<input type="file" id="hiddenImgInput" accept="image/*" style="display:none;" />
+<div class="img-lightbox" id="imgLightbox" onclick="this.style.display='none'">
+<img id="lightboxImg" src="" alt="题目配图预览" />
+</div>
+<div class="qr-modal-backdrop" id="qrModal" onclick="if(event.target===this)this.style.display='none'">
+<div class="qr-modal-box">
+<h3>手机/iPad 扫码直接闯关</h3>
+<p>成绩实时同步到本机排行榜</p>
+<img id="qrModalImg" src="" alt="扫码闯关二维码" />
+<div class="qr-url-box" id="qrUrlText">正在获取全网通用链接...</div>
+<button class="btn-primary" style="padding:10px 28px;font-size:15px;" onclick="document.getElementById('qrModal').style.display='none'">关闭窗口</button>
+</div>
+</div>
+<div class="container">
+<div class="hero">
+<div class="hero-top">
+<div class="badge">中国大陆版Apple Intelligence</div>
+<div class="hero-top-actions">
+<button class="qr-btn" onclick="openQrModal()">手机扫码闯关</button>
+<button class="sound-toggle" id="soundToggleBtn" onclick="toggleSound()">音效：已开启</button>
+</div>
+</div>
+<h1>Apple Intelligence 头号玩家：20题闯关榜</h1>
+<p>一共20题，每题5分，多选题都选对才得分哟～</p>
+</div>
+<div class="leaderboard-card">
+<div class="lb-header">
+<div class="lb-title-wrap">
+<h2>R644 英雄排行榜</h2>
+<span class="lb-privacy-tag" id="lbModeTag">公开榜：仅显示前 10 名</span>
+</div>
+<div class="lb-actions">
+<button class="btn-small admin-btn" id="adminToggleBtn" onclick="toggleAdminView()">管理员看全部名次/配图</button>
+<button class="btn-small" id="manualAddBtn" style="display:none;" onclick="addManualEntry()">手动补录成绩</button>
+<button class="btn-small" id="exportCsvBtn" style="display:none;" onclick="exportLeaderboardCsv()">导出全部表格</button>
+<button class="btn-small" id="clearLbBtn" style="display:none;" onclick="clearLeaderboard()">清空榜单</button>
+</div>
+</div>
+<div id="lbContent"></div>
+<div class="lb-footer-note" id="lbFooterNote"></div>
+</div>
+<div class="player-bar">
+<div class="player-input-group">
+<label for="playerName">闯关人姓名：</label>
+<input type="text" id="playerName" class="input-text" placeholder="请输入你的名字或昵称（上榜用）" />
+</div>
+<div class="mode-switch">
+<button class="mode-btn active" id="modeExamBtn" onclick="switchQuizMode('exam')">整卷冲榜模式</button>
+<button class="mode-btn" id="modeInstantBtn" onclick="switchQuizMode('instant')">即答即看模式</button>
+</div>
+</div>
+<div class="sticky-bar">
+<div class="progress-text" id="progressText">已答 0 / 20 题</div>
+<div class="progress-track">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+<div class="timer-text" id="timerText">用时 00:00</div>
+</div>
+<div class="result-modal" id="resultBox">
+<div class="badge" style="background:#e8f2ff;color:#0071e3;" id="resultBadge">本局战绩已计入后台榜单</div>
+<div class="score-num" id="scoreNum">0分</div>
+<div class="rank-title" id="rankTitle"></div>
+<div class="rank-desc" id="rankDesc"></div>
+<div class="result-btn-group">
+<button class="btn-celebrate" id="replayConfettiBtn" style="display:none;" onclick="launchFullCelebration()">再来一波满分礼花+音效</button>
+<button class="btn-primary" onclick="resetQuiz()">换下一位同事闯关</button>
+</div>
+</div>
+<div id="quizContainer"></div>
+<div class="submit-wrap">
+<button class="btn-primary" id="submitBtn" onclick="submitQuiz()">提交试卷并冲榜</button>
+</div>
+</div>
+<script>
+const ADMIN_PIN = "8888";
+const questions = [
+{
+stage: "第一关：高情商嘴替局（写作与沟通）",
+q: "1. 【多选】顾客写邮件或发信息时想快速调整行文语气，写作工具提供了哪几种预设语气？",
+image: "",
+options: ["专业", "浮夸", "简洁", "俏皮", "友好"],
+answer: [0, 2, 4],
+tip: "分享话术（Show Feature）：不管是给同事发邮件还是给朋友发信息，轻点一下就能在专业、简洁、友好三种语气间切换"
+},
+{
+stage: "第一关：高情商嘴替局（写作与沟通）",
+q: "2. 顾客问写作工具能不能在平时常用的第三方 App 里使用，正确的回答是？",
+image: "",
+options: ["仅限备忘录和邮件使用", "需要付费订阅才能在第三方使用", "几乎在任何输入文字的地方（包括第三方 App）都能轻点使用", "只有Apple 自带软件才能使用"],
+answer: 2,
+tip: "分享话术（Show Feature）：几乎在任何输入文字的地方，包括常用的第三方 App，点一下就能改写、校对和出摘要"
+},
+{
+stage: "第一关：高情商嘴替局（写作与沟通）",
+q: "3. 顾客担心用写作工具改完文字后找不到自己原来写的初稿，怎么帮顾客打消顾虑？",
+image: "",
+options: ["改写前必须先手动复制一份", "原稿会自动保存到相册里", "建议内容直接显示在草稿正文中，可轻松选用、继续润色或直接换回原稿", "一旦点击改写就无法恢复"],
+answer: 2,
+tip: "分享话术（Show Feature）：建议内容直接在草稿里展示，不满意随时一键退回原稿，创作完全由你掌控"
+},
+{
+stage: "第一关：高情商嘴替局（写作与沟通）",
+q: "4. 顾客手机每天收到上百条通知看不过来，Apple 智能在锁屏上怎么帮他抓重点？",
+image: "",
+options: ["自动删除所有不重要的通知", "通过首要通知将最重要的通知置顶，并以通知摘要形式显示要点", "把所有通知都在晚上通知", "只允许通讯录联系人发通知"],
+answer: 1,
+tip: "分享话术（Show Feature）：首要通知会把最紧急的事置顶，锁屏通知摘要让你扫一眼甚至听语音播报就能掌握重点"
+},
+{
+stage: "第一关：高情商嘴替局（写作与沟通）",
+q: "5. 在邮件 App 中，哪个新增板块会将具有时效性、最紧急的邮件置于收件箱顶部？",
+image: "",
+options: ["星标邮件", "置顶快讯", "优先邮件", "今日必读"],
+answer: 2,
+tip: "分享话术（Show Feature）：优先邮件板块会把赶时间的紧急邮件直接放最上面，配合智能回复几秒钟就能处理完"
+},
+{
+stage: "第一关：高情商嘴替局（写作与沟通）",
+q: "6. 【多选】关于邮件、信息和通知的 Apple 智能功能，以下哪些向顾客的介绍是正确的？",
+image: "",
+options: [
+"通知摘要只能在锁屏看文字，不支持语音播报收听",
+"邮件 App 的“优先邮件”会将具有时效性的紧急邮件置顶，并支持在收件箱和邮件串显示摘要",
+"信息 App 会显示对话要点的摘要，方便快速浏览长对话",
+"邮件和信息都支持借助“智能回复”快速编写回复"
+],
+answer: [1, 2, 3],
+tip: "分享话术（Show Feature）：优先邮件置顶、信息对话出摘要、智能回复秒回，而且无论看屏幕还是听语音播报都能快速掌握通知重点"
+},
+{
+stage: "第二关：脑洞表情包工厂（智绘表情）",
+q: "7. 顾客想在聊天时发一个“小狗徒步”的全新表情符号，最直接的操作方式是？",
+image: "",
+options: ["通过社交媒体搜索图片再保存", "直接从键盘输入“小狗徒步”描述，现场创建智绘表情", "只能在电脑上用专业软件画", "去 App Store 买表情包插件"],
+answer: 1,
+tip: "分享话术（Show Feature）：不用到处存图，直接在键盘输入简短描述，应景的全新智绘表情马上生成"
+},
+{
+stage: "第二关：脑洞表情包工厂（智绘表情）",
+q: "8. 顾客想根据朋友的相貌制作一个“举着香槟杯庆祝的朋友”的智绘表情，前提是什么？",
+image: "",
+options: ["照片图库中有已标记姓名的该联系人", "必须现场重新拍一张证件照", "需要对方手机也同时在线", "只能使用系统自带卡通头像"],
+answer: 0,
+tip: "分享话术（Show Feature）：只要照片图库中有已标记姓名的联系人，就能根据对方的相貌生成专属智绘表情"
+},
+{
+stage: "第二关：脑洞表情包工厂（智绘表情）",
+q: "9. 【多选】顾客在键盘上创建好全新的“智绘表情”后，可以通过哪些方式使用和分享？",
+image: "",
+options: [
+"在输入文字时将它们直接穿插在正文中",
+"作为贴纸进行分享",
+"只能保存成静态手机壁纸",
+"作为点回（Tapback）进行分享"
+],
+answer: [0, 1, 3],
+tip: "分享话术（Show Feature）：智绘表情既能在打字时直接穿插在正文里，也能作为贴纸和点回进行分享"
+},
+{
+stage: "第三关：废片拯救大师（照片与回忆影片）",
+q: "10. 顾客相册里有几万张照片和视频，想找“Lucy 今年在海滩”的画面，该怎么向他演示？",
+image: "",
+options: ["按月份一页页往下翻", "直接用自然语言输入“Lucy 今年在海滩”，不仅能找照片还能直接定位视频中的特定时刻", "只能通过拍照的相机型号搜索", "只能搜“大海”这种单个词，不支持输入完整句子"],
+answer: 1,
+tip: "分享话术（Show Feature）：用平时说话的方式描述完整场景就行，连长视频里的具体某一秒画面都能直接帮你揪出来"
+},
+{
+stage: "第三关：废片拯救大师（照片与回忆影片）",
+q: "11. 顾客拍的旅游照背景里有路人和杂物，照片 App 里的什么工具可以处理？",
+image: "",
+options: ["涂鸦画笔遮盖", "消除工具，自动识别背景干扰物，轻点即可去除且忠于原图", "只能裁剪掉一半画面", "通过第三方app消除"],
+answer: 1,
+tip: "分享话术（Show Feature）：不用下修图软件，相册自带消除工具，点一下路人就消失，而且画面自然忠于原图"
+},
+{
+stage: "第三关：废片拯救大师（照片与回忆影片）",
+q: "12. 【多选】顾客想用照片 App 创作一部“学习钓鱼”的回忆影片，他可以通过哪些方式掌控创作？",
+image: "",
+options: [
+"输入“学习钓鱼”主题，照片 App 会自动解析挑选包含水、码头、钓鱼竿和鱼的照片",
+"必须自己手动耗费数小时逐帧剪辑",
+"提供故事指引，例如指定以“钓到大鱼”来结束回忆",
+"添加心情，或直接挑选特定的音乐风格和歌曲来掌控配乐"
+],
+answer: [0, 2, 3],
+tip: "分享话术（Show Feature）：只要输入主题、故事结局并挑选心情或音乐风格，照片 App 就会根据描述自动完成创作回忆影片的全部工作"
+},
+{
+stage: "第三关：废片拯救大师（照片与回忆影片）",
+q: "13. 顾客想要使用照片App中“拓展”去改变构图，可以做到吗？",
+image: "",
+options: ["是", "否"],
+answer: 1,
+tip: "备注说明：该功能在 WWDC26 上公布，暂未包含在本次中国大陆版 Apple Intelligence 更新中。目前照片 App 支持自然语言搜图与视频片段、消除工具及回忆影片，向顾客分享时请以本次已上线功能为准"
+},
+{
+stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",
+q: "14. 通过“相机控制”使用视觉智能快速了解身边的事物和地点，支持哪些机型？",
+image: "",
+options: ["所有 iPhone 机型", "仅限 iPad mini", "iPhone 16 产品系列及后续机型", "仅限 Mac 电脑"],
+answer: 2,
+tip: "分享话术（Show Feature）：在 iPhone 16 系列及后续机型上，借助相机控制就能秒开视觉智能，对准身边事物一拍即识"
+},
+{
+stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",
+q: "15. 在中国大陆的视觉智能中，顾客可以使用哪项本土图片搜索服务？",
+image: "",
+options: ["百度图片搜索（此时适用百度的数据使用政策）", "仅支持纯英文词典查询", "不支持任何图片搜索", "只能识别二维码"],
+answer: 0,
+tip: "分享话术（Show Feature）：视觉智能直接集成了大家熟悉的百度图片搜索，看到不认识的东西一按就能搜出来"
+},
+{
+stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",
+q: "16. 顾客在图书馆或开会时不方便出声说话，焕然一新的 Siri 怎么满足他的需求？",
+image: "",
+options: ["必须大声喊才能唤醒", "静音模式下 Siri 会自动关闭", "只能发短信给客服", "可以在打字和语音交流之间流畅切换，并且具备更丰富的产品知识"],
+answer: 3,
+tip: "分享话术（Show Feature）：现在的 Siri 既能语音聊也能随时打字问，手机怎么设置不懂的直接打字问它就行"
+},
+{
+stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",
+q: "17. Apple 正在将阿里巴巴的“千问”集成到哪个系统版本的各项体验中？",
+image: "",
+options: ["iOS 15", "仅限 watchOS", "iOS 27", "仅限 tvOS"],
+answer: 2,
+tip: "分享话术（Show Feature）：Apple 正在将阿里巴巴的千问深度集成到 iOS 27 体验中，本土知识库更懂中国用户"
+},
+{
+stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",
+q: "18. 【多选】关于 iOS 27 集成阿里巴巴“千问”的体验，以下哪些说法是准确的？",
+image: "",
+options: [
+"千问会在不提示用户的情况下自动后台共享所有个人数据",
+"可以直接在 Siri 中利用千问的广博知识和专业特长",
+"可以直接在写作工具中利用千问，无需在不同工具之间来回切换",
+"用户可以掌控使用千问的时机，在共享任何信息之前系统都会向用户确认"
+],
+answer: [1, 2, 3],
+tip: "分享话术（Show Feature）：在 Siri 和写作工具里就能直接用千问，不用来回切软件，而且每次共享信息前系统都会向你确认"
+},
+{
+stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",
+q: "19. 得益于 Apple 智能，焕然一新的 Siri 具备哪些核心升级？",
+image: "",
+options: [
+"更自然、更契合情境、更懂你，具有更出色的对话能力和更丰富的产品知识",
+"只能设定闹钟和打电话",
+"取消了语音功能只能打字",
+"更自然、更契合情境、更懂你，但仅支持语音对话且不具备 Apple 产品知识"
+],
+answer: 0,
+tip: "分享话术（Show Feature）：Siri 不仅更懂上下文情境，还具备丰富的 Apple 产品知识，并支持在打字和语音交流之间流畅切换"
+},
+{
+stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",
+q: "20. 贯穿整个 Apple 智能每一项功能的核心设计理念是什么？",
+image: "",
+options: ["广告精准推荐", "强制云端公开分享", "只追求参数跑分", "隐私保护是每项功能的核心设计理念，由用户自行决定如何以及何时使用"],
+answer: 3,
+tip: "分享话术（Show Feature）：隐私是我们一贯坚持的底线，所有智能功能都围绕隐私保护设计，控制权永远在你手里"
+}
+];
+const OPTION_LABELS = ["A", "B", "C", "D", "E", "F", "G", "H"];
+const STORAGE_KEY = "apple_intelligence_cn_leaderboard_v1";
+const IMG_STORAGE_KEY = "apple_intelligence_cn_q_images_v1";
+const userAnswers = questions.map(q => Array.isArray(q.answer) ? [] : null);
+const questionRevealed = new Array(questions.length).fill(false);
+let quizMode = "exam";
+let submitted = false;
+let isAdminView = false;
+let soundEnabled = true;
+let startTime = Date.now();
+let elapsedSeconds = 0;
+let timerInterval = null;
+let currentEditingImgQIdx = null;
+let serverImageCache = {};
+const API_BASE = location.protocol.startsWith("http") ? "" : "http://localhost:8644";
+async function openQrModal() {
+document.getElementById("qrModal").style.display = "flex";
+try {
+const res = await fetch(API_BASE + "/api/public_url");
+if (res.ok) {
+const data = await res.json();
+if (data.url) {
+document.getElementById("qrUrlText").textContent = data.url;
+}
+}
+document.getElementById("qrModalImg").src = API_BASE + "/api/qrcode.png?t=" + Date.now();
+} catch (e) {
+document.getElementById("qrModalImg").src = "Apple智能扫码闯关二维码.png?t=" + Date.now();
+}
+}
+function loadSavedQuestionImages() {
+try {
+const raw = localStorage.getItem(IMG_STORAGE_KEY);
+const localMap = raw ? JSON.parse(raw) : {};
+return Object.assign({}, localMap, serverImageCache);
+} catch (e) {
+return serverImageCache;
+}
+}
+async function syncImagesFromServer() {
+// 支持 file:// 本地打开时自动连接本机 8644 服务
+try {
+const res = await fetch(API_BASE + "/api/images");
+if (res.ok) {
+serverImageCache = await res.json();
+renderQuiz();
+}
+} catch (e) {}
+}
+async function saveQuestionImage(qIdx, dataUrl) {
+try {
+const map = loadSavedQuestionImages();
+if (dataUrl) {
+map[qIdx] = dataUrl;
+serverImageCache[qIdx] = dataUrl;
+} else {
+delete map[qIdx];
+delete serverImageCache[qIdx];
+}
+localStorage.setItem(IMG_STORAGE_KEY, JSON.stringify(map));
+if (true) {
+await fetch(API_BASE + "/api/images", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(map)
+});
+}
+} catch (e) {
+alert("图片保存失败，请换一张截图再试");
+}
+}
+function getQuestionImageSrc(qIdx) {
+const savedMap = loadSavedQuestionImages();
+if (savedMap[qIdx]) return savedMap[qIdx];
+return questions[qIdx].image || "";
+}
+function openImagePickerForQuestion(qIdx) {
+currentEditingImgQIdx = qIdx;
+const input = document.getElementById("hiddenImgInput");
+input.value = "";
+input.click();
+}
+document.getElementById("hiddenImgInput").addEventListener("change", function(e) {
+const file = e.target.files && e.target.files[0];
+if (!file || currentEditingImgQIdx === null) return;
+const reader = new FileReader();
+reader.onload = function(evt) {
+const img = new Image();
+img.onload = async function() {
+const maxW = 1000;
+let w = img.width;
+let h = img.height;
+if (w > maxW) {
+h = Math.round((h * maxW) / w);
+w = maxW;
+}
+const c = document.createElement("canvas");
+c.width = w;
+c.height = h;
+c.getContext("2d").drawImage(img, 0, 0, w, h);
+const compressedDataUrl = c.toDataURL("image/jpeg", 0.85);
+await saveQuestionImage(currentEditingImgQIdx, compressedDataUrl);
+renderQuiz();
+};
+img.src = evt.target.result;
+};
+reader.readAsDataURL(file);
+});
+async function removeQuestionImage(qIdx) {
+questions[qIdx].image = "";
+await saveQuestionImage(qIdx, "");
+renderQuiz();
+}
+function previewLightbox(src) {
+document.getElementById("lightboxImg").src = src;
+document.getElementById("imgLightbox").style.display = "flex";
+}
+function getStageThemeNum(stageStr) {
+if (stageStr.includes("第一关")) return 1;
+if (stageStr.includes("第二关")) return 2;
+if (stageStr.includes("第三关")) return 3;
+if (stageStr.includes("第四关")) return 4;
+return 1;
+}
+let audioCtx = null;
+function getAudioCtx() {
+if (!audioCtx) {
+const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+if (AudioContextClass) {
+audioCtx = new AudioContextClass();
+}
+}
+if (audioCtx && audioCtx.state === "suspended") {
+audioCtx.resume();
+}
+return audioCtx;
+}
+function toggleSound() {
+soundEnabled = !soundEnabled;
+document.getElementById("soundToggleBtn").textContent = soundEnabled ? "音效：已开启" : "音效：已静音";
+if (soundEnabled) {
+playTapSound(true);
+}
+}
+function playTapSound(isSelecting = true) {
+if (!soundEnabled) return;
+const ctxAudio = getAudioCtx();
+if (!ctxAudio) return;
+const now = ctxAudio.currentTime;
+const osc = ctxAudio.createOscillator();
+const gain = ctxAudio.createGain();
+osc.type = "sine";
+osc.frequency.setValueAtTime(isSelecting ? 520 : 420, now);
+osc.frequency.exponentialRampToValueAtTime(isSelecting ? 760 : 320, now + 0.065);
+gain.gain.setValueAtTime(0.12, now);
+gain.gain.exponentialRampToValueAtTime(0.001, now + 0.065);
+osc.connect(gain);
+gain.connect(ctxAudio.destination);
+osc.start(now);
+osc.stop(now + 0.07);
+}
+function playInstantCheckSound(isRight) {
+if (!soundEnabled) return;
+const ctxAudio = getAudioCtx();
+if (!ctxAudio) return;
+const now = ctxAudio.currentTime;
+if (isRight) {
+[587.33, 880].forEach((freq, idx) => {
+const osc = ctxAudio.createOscillator();
+const gain = ctxAudio.createGain();
+osc.type = "sine";
+osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+gain.gain.setValueAtTime(0.14, now + idx * 0.08);
+gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.16);
+osc.connect(gain);
+gain.connect(ctxAudio.destination);
+osc.start(now + idx * 0.08);
+osc.stop(now + idx * 0.08 + 0.17);
+});
+} else {
+const osc = ctxAudio.createOscillator();
+const gain = ctxAudio.createGain();
+osc.type = "triangle";
+osc.frequency.setValueAtTime(240, now);
+osc.frequency.linearRampToValueAtTime(170, now + 0.2);
+gain.gain.setValueAtTime(0.16, now);
+gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+osc.connect(gain);
+gain.connect(ctxAudio.destination);
+osc.start(now);
+osc.stop(now + 0.23);
+}
+}
+function playPopBurstSound(delaySec = 0) {
+if (!soundEnabled) return;
+const ctxAudio = getAudioCtx();
+if (!ctxAudio) return;
+const start = ctxAudio.currentTime + delaySec;
+const osc = ctxAudio.createOscillator();
+const oscGain = ctxAudio.createGain();
+osc.type = "triangle";
+osc.frequency.setValueAtTime(160, start);
+osc.frequency.exponentialRampToValueAtTime(42, start + 0.18);
+oscGain.gain.setValueAtTime(0.28, start);
+oscGain.gain.exponentialRampToValueAtTime(0.001, start + 0.18);
+osc.connect(oscGain);
+oscGain.connect(ctxAudio.destination);
+osc.start(start);
+osc.stop(start + 0.19);
+const bufferSize = ctxAudio.sampleRate * 0.22;
+const noiseBuffer = ctxAudio.createBuffer(1, bufferSize, ctxAudio.sampleRate);
+const output = noiseBuffer.getChannelData(0);
+for (let i = 0; i < bufferSize; i++) {
+output[i] = Math.random() * 2 - 1;
+}
+const whiteNoise = ctxAudio.createBufferSource();
+whiteNoise.buffer = noiseBuffer;
+const filter = ctxAudio.createBiquadFilter();
+filter.type = "bandpass";
+filter.frequency.setValueAtTime(1800, start);
+const noiseGain = ctxAudio.createGain();
+noiseGain.gain.setValueAtTime(0.18, start);
+noiseGain.gain.exponentialRampToValueAtTime(0.001, start + 0.22);
+whiteNoise.connect(filter);
+filter.connect(noiseGain);
+noiseGain.connect(ctxAudio.destination);
+whiteNoise.start(start);
+whiteNoise.stop(start + 0.22);
+}
+function playPerfectCelebrationAudio() {
+if (!soundEnabled) return;
+const ctxAudio = getAudioCtx();
+if (!ctxAudio) return;
+const now = ctxAudio.currentTime;
+const notes = [
+{ freq: 523.25, time: 0.0, dur: 0.14 },
+{ freq: 659.25, time: 0.12, dur: 0.14 },
+{ freq: 783.99, time: 0.24, dur: 0.14 },
+{ freq: 1046.50, time: 0.36, dur: 0.45 },
+{ freq: 783.99, time: 0.56, dur: 0.14 },
+{ freq: 1046.50, time: 0.70, dur: 0.65 }
+];
+notes.forEach(n => {
+const osc = ctxAudio.createOscillator();
+const gain = ctxAudio.createGain();
+osc.type = "triangle";
+osc.frequency.setValueAtTime(n.freq, now + n.time);
+gain.gain.setValueAtTime(0.001, now + n.time);
+gain.gain.linearRampToValueAtTime(0.22, now + n.time + 0.02);
+gain.gain.exponentialRampToValueAtTime(0.001, now + n.time + n.dur);
+osc.connect(gain);
+gain.connect(ctxAudio.destination);
+osc.start(now + n.time);
+osc.stop(now + n.time + n.dur + 0.02);
+});
+playPopBurstSound(0.02);
+playPopBurstSound(0.35);
+playPopBurstSound(0.95);
+playPopBurstSound(1.50);
+}
+function playStandardSubmitAudio(score) {
+if (!soundEnabled) return;
+const ctxAudio = getAudioCtx();
+if (!ctxAudio) return;
+const now = ctxAudio.currentTime;
+const freqs = score >= 75 ? [440, 554.37, 659.25] : [392, 440];
+freqs.forEach((f, idx) => {
+const osc = ctxAudio.createOscillator();
+const gain = ctxAudio.createGain();
+osc.type = "sine";
+osc.frequency.setValueAtTime(f, now + idx * 0.11);
+gain.gain.setValueAtTime(0.15, now + idx * 0.11);
+gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.11 + 0.25);
+osc.connect(gain);
+gain.connect(ctxAudio.destination);
+osc.start(now + idx * 0.11);
+osc.stop(now + idx * 0.11 + 0.26);
+});
+}
+const confettiCanvas = document.getElementById("confettiCanvas");
+const ctx = confettiCanvas.getContext("2d");
+let confettiParticles = [];
+let confettiAnimId = null;
+let confettiTimers = [];
+const CONFETTI_COLORS = [
+"#ff2d55", "#ff9500", "#ffcc00", "#28cd41",
+"#0071e3", "#5ac8fa", "#af52de", "#ff3b30", "#30d158"
+];
+function resizeConfettiCanvas() {
+confettiCanvas.width = window.innerWidth;
+confettiCanvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeConfettiCanvas);
+resizeConfettiCanvas();
+function createParticle(x, y, vx, vy, shape) {
+return {
+x,
+y,
+vx,
+vy,
+size: Math.random() * 8 + 6,
+color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+rotation: Math.random() * Math.PI * 2,
+rotSpeed: (Math.random() - 0.5) * 0.22,
+wobble: Math.random() * Math.PI * 2,
+wobbleSpeed: Math.random() * 0.1 + 0.05,
+gravity: 0.22 + Math.random() * 0.1,
+drag: 0.985,
+opacity: 1,
+shape: shape || (Math.random() > 0.3 ? "rect" : "circle")
+};
+}
+function fireEdgeCannons() {
+const w = confettiCanvas.width;
+const h = confettiCanvas.height;
+[h * 0.85, h * 0.5, h * 0.2].forEach(yPos => {
+for (let i = 0; i < 38; i++) {
+const angle = (-Math.PI / 3) + (Math.random() * Math.PI / 2.2);
+const speed = Math.random() * 18 + 10;
+confettiParticles.push(
+createParticle(0, yPos, Math.cos(angle) * speed, Math.sin(angle) * speed - 4)
+);
+}
+});
+[h * 0.85, h * 0.5, h * 0.2].forEach(yPos => {
+for (let i = 0; i < 38; i++) {
+const angle = (-Math.PI * 2 / 3) - (Math.random() * Math.PI / 2.2);
+const speed = Math.random() * 18 + 10;
+confettiParticles.push(
+createParticle(w, yPos, Math.cos(angle) * speed, Math.sin(angle) * speed - 4)
+);
+}
+});
+}
+function fireFullScreenConfetti() {
+const w = confettiCanvas.width;
+const h = confettiCanvas.height;
+for (let b = 0; b < 5; b++) {
+const cx = w * (0.15 + Math.random() * 0.7);
+const cy = h * (0.15 + Math.random() * 0.45);
+for (let i = 0; i < 55; i++) {
+const angle = Math.random() * Math.PI * 2;
+const speed = Math.random() * 14 + 3;
+confettiParticles.push(
+createParticle(cx, cy, Math.cos(angle) * speed, Math.sin(angle) * speed)
+);
+}
+}
+for (let i = 0; i < 160; i++) {
+confettiParticles.push(
+createParticle(
+Math.random() * w,
+-20 - Math.random() * h * 0.4,
+(Math.random() - 0.5) * 6,
+Math.random() * 5 + 2
+)
+);
+}
+}
+function animateConfetti() {
+ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+for (let i = confettiParticles.length - 1; i >= 0; i--) {
+const p = confettiParticles[i];
+p.vx *= p.drag;
+p.vy = p.vy * p.drag + p.gravity;
+p.x += p.vx + Math.sin(p.wobble) * 1.2;
+p.y += p.vy;
+p.rotation += p.rotSpeed;
+p.wobble += p.wobbleSpeed;
+if (p.y > confettiCanvas.height + 40) {
+p.opacity -= 0.08;
+}
+if (p.opacity <= 0) {
+confettiParticles.splice(i, 1);
+continue;
+}
+ctx.save();
+ctx.globalAlpha = Math.max(0, p.opacity);
+ctx.translate(p.x, p.y);
+ctx.rotate(p.rotation);
+ctx.fillStyle = p.color;
+if (p.shape === "circle") {
+ctx.beginPath();
+ctx.arc(0, 0, p.size * 0.45, 0, Math.PI * 2);
+ctx.fill();
+} else {
+ctx.fillRect(-p.size / 2, -p.size / 3, p.size, p.size * 0.66);
+}
+ctx.restore();
+}
+if (confettiParticles.length > 0) {
+confettiAnimId = requestAnimationFrame(animateConfetti);
+} else {
+confettiAnimId = null;
+}
+}
+function stopConfetti() {
+confettiTimers.forEach(t => clearTimeout(t));
+confettiTimers = [];
+confettiParticles = [];
+if (confettiAnimId) {
+cancelAnimationFrame(confettiAnimId);
+confettiAnimId = null;
+}
+ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+}
+function launchFullCelebration() {
+stopConfetti();
+resizeConfettiCanvas();
+playPerfectCelebrationAudio();
+fireEdgeCannons();
+if (!confettiAnimId) animateConfetti();
+confettiTimers.push(setTimeout(() => fireFullScreenConfetti(), 350));
+confettiTimers.push(setTimeout(() => fireEdgeCannons(), 950));
+confettiTimers.push(setTimeout(() => fireFullScreenConfetti(), 1500));
+confettiTimers.push(setTimeout(() => fireFullScreenConfetti(), 2400));
+}
+function isMultiQuestion(qIdx) {
+return Array.isArray(questions[qIdx].answer);
+}
+function switchQuizMode(mode) {
+if (quizMode === mode) return;
+quizMode = mode;
+document.getElementById("modeExamBtn").classList.toggle("active", mode === "exam");
+document.getElementById("modeInstantBtn").classList.toggle("active", mode === "instant");
+playTapSound(true);
+questions.forEach((_, qIdx) => {
+const confirmBtn = document.getElementById(`confirm_multi_${qIdx}`);
+if (confirmBtn) {
+confirmBtn.style.display = (mode === "instant" && !questionRevealed[qIdx] && !submitted) ? "inline-block" : "none";
+}
+if (mode === "instant" && !isMultiQuestion(qIdx) && userAnswers[qIdx] !== null && !questionRevealed[qIdx]) {
+revealSingleQuestionResult(qIdx, false);
+}
+});
+}
+function revealSingleQuestionResult(qIdx, withSound = true) {
+const item = questions[qIdx];
+const multi = isMultiQuestion(qIdx);
+const chosen = userAnswers[qIdx];
+const optCount = item.options.length;
+questionRevealed[qIdx] = true;
+const isRight = checkQuestionCorrect(qIdx);
+if (withSound) {
+playInstantCheckSound(isRight);
+}
+for (let i = 0; i < optCount; i++) {
+const btn = document.getElementById(`q${qIdx}_opt${i}`);
+btn.classList.remove("selected", "selected-multi");
+if (multi) {
+const inAnswer = item.answer.includes(i);
+const inChosen = chosen.includes(i);
+if (inAnswer) {
+btn.classList.add("correct");
+} else if (inChosen && !inAnswer) {
+btn.classList.add("wrong");
+}
+} else {
+if (i === item.answer) {
+btn.classList.add("correct");
+} else if (i === chosen && chosen !== item.answer) {
+btn.classList.add("wrong");
+}
+}
+}
+const confirmBtn = document.getElementById(`confirm_multi_${qIdx}`);
+if (confirmBtn) confirmBtn.style.display = "none";
+document.getElementById(`explain_${qIdx}`).style.display = "block";
+}
+function confirmMultiInstant(qIdx) {
+if (submitted || questionRevealed[qIdx]) return;
+if (userAnswers[qIdx].length === 0) {
+alert("请至少点选一个选项后再确认本题答案");
+return;
+}
+revealSingleQuestionResult(qIdx, true);
+}
+function startTimer() {
+clearInterval(timerInterval);
+startTime = Date.now();
+elapsedSeconds = 0;
+updateTimerDisplay();
+timerInterval = setInterval(() => {
+if (!submitted) {
+elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+updateTimerDisplay();
+}
+}, 1000);
+}
+function formatTime(sec) {
+const m = String(Math.floor(sec / 60)).padStart(2, "0");
+const s = String(sec % 60).padStart(2, "0");
+return `${m}:${s}`;
+}
+function updateTimerDisplay() {
+document.getElementById("timerText").textContent = `用时 ${formatTime(elapsedSeconds)}`;
+}
+function getRankName(score) {
+if (score === 100) return "超级明星";
+if (score >= 90) return "头号玩家";
+if (score >= 75) return "实操达人";
+return "潜力新星";
+}
+function loadLeaderboard() {
+try {
+const raw = localStorage.getItem(STORAGE_KEY);
+return raw ? JSON.parse(raw) : [];
+} catch (e) {
+return [];
+}
+}
+function saveLeaderboard(list) {
+localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}
+async function syncLeaderboardFromServer() {
+// 支持 file:// 本地打开时自动连接本机 8644 服务
+try {
+const res = await fetch(API_BASE + "/api/leaderboard");
+if (res.ok) {
+const serverList = await res.json();
+saveLeaderboard(serverList);
+renderLeaderboard();
+}
+} catch (e) {}
+}
+function getSortedLeaderboard() {
+const list = loadLeaderboard();
+list.sort((a, b) => {
+if (b.score !== a.score) return b.score - a.score;
+return a.seconds - b.seconds;
+});
+return list;
+}
+function toggleAdminView() {
+if (isAdminView) {
+isAdminView = false;
+updateAdminUI();
+renderLeaderboard();
+renderQuiz();
+return;
+}
+const pin = prompt("请输入管理员口令（解锁全部名次及题目配图上传）：");
+if (pin === null) return;
+if (pin.trim() === ADMIN_PIN) {
+isAdminView = true;
+updateAdminUI();
+renderLeaderboard();
+renderQuiz();
+} else {
+alert("管理员口令不正确");
+}
+}
+function updateAdminUI() {
+const modeTag = document.getElementById("lbModeTag");
+const toggleBtn = document.getElementById("adminToggleBtn");
+const manualBtn = document.getElementById("manualAddBtn");
+const exportBtn = document.getElementById("exportCsvBtn");
+const clearBtn = document.getElementById("clearLbBtn");
+if (isAdminView) {
+modeTag.textContent = "管理员视角：显示全部名次 + 可给每题加照片";
+modeTag.classList.add("admin-active");
+toggleBtn.textContent = "退出管理员视角";
+manualBtn.style.display = "inline-block";
+exportBtn.style.display = "inline-block";
+clearBtn.style.display = "inline-block";
+} else {
+modeTag.textContent = "公开榜：仅显示前 10 名";
+modeTag.classList.remove("admin-active");
+toggleBtn.textContent = "管理员看全部名次/配图";
+manualBtn.style.display = "none";
+exportBtn.style.display = "none";
+clearBtn.style.display = "none";
+}
+}
+function renderLeaderboard() {
+const fullList = getSortedLeaderboard();
+const container = document.getElementById("lbContent");
+const footerNote = document.getElementById("lbFooterNote");
+if (fullList.length === 0) {
+container.innerHTML = `<div class="empty-lb">暂无上榜记录，快输入名字完成第一局挑战吧</div>`;
+footerNote.textContent = "";
+return;
+}
+const displayList = isAdminView ? fullList : fullList.slice(0, 10);
+let rowsHtml = displayList.map((item, idx) => {
+const rankNum = idx + 1;
+const badgeClass = rankNum <= 3 ? `rank-badge rank-${rankNum}` : "rank-badge";
+return `
+<tr>
+<td><span class="${badgeClass}">${rankNum}</span></td>
+<td><strong>${escapeHtml(item.name)}</strong></td>
+<td style="color:#0071e3;font-weight:700;">${item.score}分</td>
+<td>${item.rank}</td>
+<td>${formatTime(item.seconds)}</td>
+</tr>
+`;
+}).join("");
+container.innerHTML = `
+<table class="lb-table">
+<thead>
+<tr>
+<th>排名</th>
+<th>姓名</th>
+<th>总分</th>
+<th>称号</th>
+<th>用时</th>
+</tr>
+</thead>
+<tbody>${rowsHtml}</tbody>
+</table>
+`;
+if (isAdminView) {
+footerNote.textContent = `管理员模式：当前共 ${fullList.length} 位同事参与，下方每道题已开启“上传/更换本题照片”按钮`;
+} else {
+footerNote.textContent = fullList.length > 10
+? `共 ${fullList.length} 人参与，为保护隐私公开榜仅展示前 10 名`
+: `当前共 ${fullList.length} 人参与（公开榜上限展示前 10 名）`;
+}
+}
+function exportLeaderboardCsv() {
+const fullList = getSortedLeaderboard();
+if (fullList.length === 0) {
+alert("暂无成绩记录可导出");
+return;
+}
+const header = ["排名", "姓名", "总分", "称号", "用时(分:秒)", "用时秒数"];
+const rows = fullList.map((item, idx) => [
+idx + 1,
+`"${String(item.name).replace(/"/g, '""')}"`,
+item.score,
+item.rank,
+formatTime(item.seconds),
+item.seconds
+]);
+const csvContent = "\uFEFF" + [header.join(","), ...rows.map(r => r.join(","))].join("\n");
+const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+const url = URL.createObjectURL(blob);
+const a = document.createElement("a");
+a.href = url;
+a.download = "R644_Apple智能闯关全部名次表.csv";
+a.click();
+URL.revokeObjectURL(url);
+}
+function escapeHtml(str) {
+return String(str).replace(/[&<>"']/g, s => ({
+"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+}[s]));
+}
+async function addScoreToLeaderboard(name, score, seconds) {
+const entryId = Date.now() + "_" + Math.random().toString(36).slice(2, 7);
+const newEntry = {
+id: entryId,
+name: name.trim() || "匿名同事",
+score,
+seconds,
+rank: getRankName(score),
+time: Date.now()
+};
+if (true) {
+try {
+const res = await fetch(API_BASE + "/api/leaderboard", {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(newEntry)
+});
+if (res.ok) {
+const serverList = await res.json();
+saveLeaderboard(serverList);
+renderLeaderboard();
+const sorted = getSortedLeaderboard();
+const idx = sorted.findIndex(item => item.id === entryId);
+return idx !== -1 ? idx + 1 : sorted.length;
+}
+} catch (e) {}
+}
+const list = loadLeaderboard();
+list.push(newEntry);
+saveLeaderboard(list);
+renderLeaderboard();
+const sorted = getSortedLeaderboard();
+const myRankIndex = sorted.findIndex(item => item.id === entryId);
+return myRankIndex !== -1 ? myRankIndex + 1 : sorted.length;
+}
+async function addManualEntry() {
+const name = prompt("请输入要补录的同事姓名：");
+if (!name) return;
+const scoreStr = prompt("请输入得分（0 到 100）：", "95");
+if (scoreStr === null) return;
+const score = Math.max(0, Math.min(100, parseInt(scoreStr, 10) || 0));
+const secStr = prompt("请输入用时秒数（例如 90 代表1分30秒）：", "90");
+const seconds = Math.max(1, parseInt(secStr, 10) || 90);
+await addScoreToLeaderboard(name, score, seconds);
+}
+async function clearLeaderboard() {
+if (confirm("确定要清空当前所有排行榜记录吗？")) {
+localStorage.removeItem(STORAGE_KEY);
+if (true) {
+try {
+await fetch(API_BASE + "/api/leaderboard", { method: "DELETE" });
+} catch (e) {}
+}
+renderLeaderboard();
+}
+}
+function formatAnswerLetters(ans) {
+if (Array.isArray(ans)) {
+return ans.map(i => OPTION_LABELS[i]).join("、");
+}
+return OPTION_LABELS[ans];
+}
+function renderQuiz() {
+const container = document.getElementById("quizContainer");
+container.innerHTML = "";
+let lastStage = "";
+questions.forEach((item, qIdx) => {
+const themeNum = getStageThemeNum(item.stage);
+if (item.stage !== lastStage) {
+lastStage = item.stage;
+const banner = document.createElement("div");
+banner.className = `stage-banner stage-banner-${themeNum}`;
+banner.textContent = item.stage;
+container.appendChild(banner);
+}
+const multi = isMultiQuestion(qIdx);
+const card = document.createElement("div");
+card.className = `q-card stage-theme-${themeNum}`;
+const meta = document.createElement("div");
+meta.className = "q-meta";
+const stage = document.createElement("div");
+stage.className = "q-stage";
+stage.textContent = item.stage;
+const typeTag = document.createElement("span");
+typeTag.className = `q-type-tag ${multi ? "tag-multi" : "tag-single"}`;
+typeTag.textContent = multi ? "多选题（可点选多个）" : "单选题";
+meta.appendChild(stage);
+meta.appendChild(typeTag);
+card.appendChild(meta);
+const title = document.createElement("div");
+title.className = "q-title";
+title.textContent = item.q;
+card.appendChild(title);
+if (isAdminView) {
+const adminImgBar = document.createElement("div");
+adminImgBar.className = "q-admin-img-bar";
+adminImgBar.style.display = "flex";
+const upBtn = document.createElement("button");
+upBtn.className = "btn-small admin-btn";
+upBtn.textContent = getQuestionImageSrc(qIdx) ? "更换本题照片" : "给本题添加照片";
+upBtn.onclick = () => openImagePickerForQuestion(qIdx);
+adminImgBar.appendChild(upBtn);
+if (getQuestionImageSrc(qIdx)) {
+const delBtn = document.createElement("button");
+delBtn.className = "btn-small";
+delBtn.textContent = "移除照片";
+delBtn.onclick = () => removeQuestionImage(qIdx);
+adminImgBar.appendChild(delBtn);
+}
+card.appendChild(adminImgBar);
+}
+const imgSrc = getQuestionImageSrc(qIdx);
+if (imgSrc) {
+const imgWrap = document.createElement("div");
+imgWrap.className = "q-image-wrap";
+const imgEl = document.createElement("img");
+imgEl.className = "q-image";
+imgEl.src = imgSrc;
+imgEl.alt = `第${qIdx + 1}题配图`;
+imgEl.onclick = () => previewLightbox(imgSrc);
+imgWrap.appendChild(imgEl);
+card.appendChild(imgWrap);
+}
+const optsDiv = document.createElement("div");
+optsDiv.className = "options";
+item.options.forEach((optText, optIdx) => {
+const btn = document.createElement("button");
+btn.className = "option-btn";
+btn.textContent = `${OPTION_LABELS[optIdx]}. ${optText}`;
+btn.onclick = () => selectOption(qIdx, optIdx);
+btn.id = `q${qIdx}_opt${optIdx}`;
+if (submitted || questionRevealed[qIdx]) {
+if (multi) {
+if (item.answer.includes(optIdx)) btn.classList.add("correct");
+else if (userAnswers[qIdx].includes(optIdx)) btn.classList.add("wrong");
+} else {
+if (optIdx === item.answer) btn.classList.add("correct");
+else if (optIdx === userAnswers[qIdx]) btn.classList.add("wrong");
+}
+} else {
+if (multi && userAnswers[qIdx].includes(optIdx)) btn.classList.add("selected-multi");
+if (!multi && userAnswers[qIdx] === optIdx) btn.classList.add("selected");
+}
+optsDiv.appendChild(btn);
+});
+card.appendChild(optsDiv);
+if (multi) {
+const confirmBtn = document.createElement("button");
+confirmBtn.className = "instant-confirm-btn";
+confirmBtn.id = `confirm_multi_${qIdx}`;
+confirmBtn.textContent = "确认本题多选答案";
+confirmBtn.style.display = (quizMode === "instant" && !questionRevealed[qIdx] && !submitted) ? "inline-block" : "none";
+confirmBtn.onclick = () => confirmMultiInstant(qIdx);
+card.appendChild(confirmBtn);
+}
+const explain = document.createElement("div");
+explain.className = "explain-box";
+explain.id = `explain_${qIdx}`;
+explain.style.display = (submitted || questionRevealed[qIdx]) ? "block" : "none";
+explain.innerHTML = `<strong>正确答案：${formatAnswerLetters(item.answer)}</strong><br>${item.tip}`;
+card.appendChild(explain);
+container.appendChild(card);
+});
+}
+function selectOption(qIdx, optIdx) {
+if (submitted || questionRevealed[qIdx]) return;
+const optCount = questions[qIdx].options.length;
+if (isMultiQuestion(qIdx)) {
+const arr = userAnswers[qIdx];
+const pos = arr.indexOf(optIdx);
+if (pos === -1) {
+arr.push(optIdx);
+playTapSound(true);
+} else {
+arr.splice(pos, 1);
+playTapSound(false);
+}
+for (let i = 0; i < optCount; i++) {
+const btn = document.getElementById(`q${qIdx}_opt${i}`);
+btn.classList.toggle("selected-multi", arr.includes(i));
+}
+} else {
+userAnswers[qIdx] = optIdx;
+if (quizMode === "instant") {
+revealSingleQuestionResult(qIdx, true);
+} else {
+playTapSound(true);
+for (let i = 0; i < optCount; i++) {
+const btn = document.getElementById(`q${qIdx}_opt${i}`);
+btn.classList.toggle("selected", i === optIdx);
+}
+}
+}
+updateProgress();
+}
+function isQuestionAnswered(qIdx) {
+if (isMultiQuestion(qIdx)) {
+return userAnswers[qIdx].length > 0;
+}
+return userAnswers[qIdx] !== null;
+}
+function updateProgress() {
+let answeredCount = 0;
+for (let i = 0; i < questions.length; i++) {
+if (isQuestionAnswered(i)) answeredCount++;
+}
+document.getElementById("progressText").textContent = `已答 ${answeredCount} / ${questions.length} 题`;
+document.getElementById("progressFill").style.width = `${(answeredCount / questions.length) * 100}%`;
+}
+function checkQuestionCorrect(qIdx) {
+const expected = questions[qIdx].answer;
+const chosen = userAnswers[qIdx];
+if (Array.isArray(expected)) {
+if (chosen.length !== expected.length) return false;
+const s1 = [...expected].sort().join(",");
+const s2 = [...chosen].sort().join(",");
+return s1 === s2;
+}
+return chosen === expected;
+}
+async function submitQuiz() {
+const playerNameInput = document.getElementById("playerName");
+let playerName = playerNameInput.value.trim();
+if (!playerName) {
+playerName = prompt("交卷前请留下你的姓名或昵称（用于上榜排名）：") || "匿名玩家";
+playerNameInput.value = playerName;
+}
+const unanswered = questions.findIndex((_, idx) => !isQuestionAnswered(idx));
+if (unanswered !== -1) {
+alert(`还有第 ${unanswered + 1} 题未作答，全部选完才能出总分`);
+document.getElementById(`q${unanswered}_opt0`).scrollIntoView({ behavior: "smooth", block: "center" });
+return;
+}
+submitted = true;
+clearInterval(timerInterval);
+let score = 0;
+questions.forEach((item, qIdx) => {
+const isCorrect = checkQuestionCorrect(qIdx);
+if (isCorrect) {
+score += 5;
+}
+questionRevealed[qIdx] = true;
+const multi = isMultiQuestion(qIdx);
+const chosen = userAnswers[qIdx];
+const optCount = item.options.length;
+for (let i = 0; i < optCount; i++) {
+const btn = document.getElementById(`q${qIdx}_opt${i}`);
+btn.classList.remove("selected", "selected-multi");
+if (multi) {
+const inAnswer = item.answer.includes(i);
+const inChosen = chosen.includes(i);
+if (inAnswer) {
+btn.classList.add("correct");
+} else if (inChosen && !inAnswer) {
+btn.classList.add("wrong");
+}
+} else {
+if (i === item.answer) {
+btn.classList.add("correct");
+} else if (i === chosen && chosen !== item.answer) {
+btn.classList.add("wrong");
+}
+}
+}
+const confirmBtn = document.getElementById(`confirm_multi_${qIdx}`);
+if (confirmBtn) confirmBtn.style.display = "none";
+document.getElementById(`explain_${qIdx}`).style.display = "block";
+});
+const myRank = await addScoreToLeaderboard(playerName, score, elapsedSeconds);
+const resultBox = document.getElementById("resultBox");
+const scoreNum = document.getElementById("scoreNum");
+const rankTitle = document.getElementById("rankTitle");
+const rankDesc = document.getElementById("rankDesc");
+const replayBtn = document.getElementById("replayConfettiBtn");
+const resultBadge = document.getElementById("resultBadge");
+scoreNum.textContent = `${score}分`;
+rankTitle.textContent = `${playerName} | 当前第 ${myRank} 名 | 段位：Apple Intelligence ${getRankName(score)}（用时 ${formatTime(elapsedSeconds)}）`;
+if (score === 100) {
+resultBox.classList.add("perfect-score");
+resultBadge.textContent = "满分大满贯达成";
+resultBadge.style.background = "#fff3e0";
+resultBadge.style.color = "#ff9500";
+rankDesc.textContent = "20道题全部答对，你就是R644 Apple Intelligence 的超级明星，快向你的顾客分享吧🎉";
+replayBtn.style.display = "inline-block";
+launchFullCelebration();
+} else {
+playStandardSubmitAudio(score);
+resultBox.classList.remove("perfect-score");
+resultBadge.textContent = "本局战绩已计入后台榜单";
+resultBadge.style.background = "#e8f2ff";
+resultBadge.style.color = "#0071e3";
+replayBtn.style.display = "none";
+if (score >= 90) {
+rankDesc.textContent = "王牌水准，距离100分满屏礼花只差一步，看看下方错题的分享话术马上冲满分";
+} else if (score >= 75) {
+rankDesc.textContent = "核心功能掌握很稳，看看下方标红错题的分享话术（Show Feature），马上就能冲满分";
+} else {
+rankDesc.textContent = "建议对照下方每题分享话术拿样机实操一遍，再来刷一次题就能轻松过关";
+}
+}
+resultBox.style.display = "block";
+document.getElementById("submitBtn").style.display = "none";
+window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function resetQuiz() {
+stopConfetti();
+submitted = false;
+questionRevealed.fill(false);
+for (let i = 0; i < questions.length; i++) {
+userAnswers[i] = isMultiQuestion(i) ? [] : null;
+}
+document.getElementById("playerName").value = "";
+document.getElementById("resultBox").style.display = "none";
+document.getElementById("submitBtn").style.display = "inline-block";
+renderQuiz();
+updateProgress();
+startTimer();
+window.scrollTo({ top: 0, behavior: "smooth" });
+}
+renderQuiz();
+renderLeaderboard();
+startTimer();
+setTimeout(() => {
+syncLeaderboardFromServer();
+syncImagesFromServer();
+}, 300);
+if (true) {
+setInterval(syncLeaderboardFromServer, 15000);
+}
+</script>
+</body>
+</html>
