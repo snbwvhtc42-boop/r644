@@ -157,8 +157,8 @@ body{background:var(--bg);color:var(--text);line-height:1.55;padding:24px 16px 6
 </div>
 </div>
 
-<!-- 锁定稳定版本 -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3"></script>
+<!-- 引入 Supabase，换用国内极其稳定的 unpkg 节点 -->
+<script src="https://unpkg.com/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
 <script>
 const SUPABASE_URL = 'https://ityoclhvzhmihgwahkpv.supabase.co'; 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0eW9jbGh2emhtaWhnd2Foa3B2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4NjQ3NTEsImV4cCI6MjEwOTQ0MDc1MX0.b_J9P7RlCGWy0KB0q3YWMZmyX1R7ISyCoVIpNnEcueU'; 
@@ -591,14 +591,13 @@ function resetQuiz() {
     renderQuiz(); updateProgress(); startTimer(); window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// 初始化：先渲染题目（防云端崩溃卡死），再尝试连云端
-renderQuiz();
-startTimer();
-refreshLeaderboard();
-
-setInterval(() => {
-    if (!submitted) refreshLeaderboard();
-}, 10000);
+// 关键调整：用 window.onload 确保页面全部渲染完，且优先渲染题目。
+window.addEventListener('load', () => {
+    renderQuiz();
+    startTimer();
+    refreshLeaderboard();
+    setInterval(() => { if (!submitted) refreshLeaderboard(); }, 10000);
+});
 </script>
 </body>
 </html>
