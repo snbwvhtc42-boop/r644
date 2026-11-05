@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Apple 11.6 开售新品整合问答挑战（20题）</title>
+<style>
+:root {
+  --bg: #f5f5f7;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --subtext: #6e6e73;
+  --accent: #0071e3;
+  --accent-soft: #e8f2ff;
+  --multi: #af52de;
+  --multi-soft: #f5ebff;
+  --success: #28cd41;
+  --danger: #ff3b30;
+  --warning: #ff9500;
+  --border: #d2d2d7;
+  --s0-bg: #eaf3ff;
+  --s0-border: #9ec5fe;
+  --s0-accent: #0066cc;
+  --s0-grad: linear-gradient(135deg, #0055b3 0%, #0077ed 100%);
+  --s1-bg: #f3ecff;
+  --s1-border: #cbb2fe;
+  --s1-accent: #6e3bce;
+  --s1-grad: linear-gradient(135deg, #5b27b6 0%, #8944ab 100%);
+  --s2-bg: #e6f9f1;
+  --s2-border: #8ce0be;
+  --s2-accent: #0b7a5c;
+  --s2-grad: linear-gradient(135deg, #0b6e53 0%, #10a37f 100%);
+  --s3-bg: #fff1e6;
+  --s3-border: #ffc299;
+  --s3-accent: #c2410c;
+  --s3-grad: linear-gradient(135deg, #b83b08 0%, #ea580c 100%);
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  padding: 24px 16px 60px;
+}
+#confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hero {
+  background: linear-gradient(135deg, #1d1d1f 0%, #2c2c2e 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 28px 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  position: relative;
+}
+.hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.16);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.sound-toggle {
+  background: rgba(255,255,255,0.16);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.25);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.sound-toggle:hover {
+  background: rgba(255,255,255,0.26);
+}
+.hero h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+.hero p {
+  font-size: 16px;
+  color: #d2d2d7;
+  margin-bottom: 14px;
+}
+.device-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.device-pill {
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.device-pill:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+.pill-s0 { background: var(--s0-grad); }
+.pill-s1 { background: var(--s1-grad); }
+.pill-s2 { background: var(--s2-grad); }
+.pill-s3 { background: var(--s3-grad); }
+
+.summary-card {
+  display: none;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+.summary-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.summary-toggle h2 {
+  font-size: 19px;
+  font-weight: 700;
+}
+.summary-status {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.summary-grid {
+  display: none;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+.summary-grid.open {
+  display: grid;
+}
+.summary-item {
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+.summary-s0 { background: var(--s0-bg); border-color: var(--s0-border); }
+.summary-s0 h3 { color: var(--s0-accent); }
+.summary-s1 { background: var(--s1-bg); border-color: var(--s1-border); }
+.summary-s1 h3 { color: var(--s1-accent); }
+.summary-s2 { background: var(--s2-bg); border-color: var(--s2-border); }
+.summary-s2 h3 { color: var(--s2-accent); }
+.summary-s3 { background: var(--s3-bg); border-color: var(--s3-border); }
+.summary-s3 h3 { color: var(--s3-accent); }
+
+.summary-item.need-review {
+  border-color: var(--warning);
+  box-shadow: 0 0 0 2px rgba(255, 149, 0, 0.2);
+}
+.summary-item.stage-clear {
+  border-color: var(--success);
+}
+.summary-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.summary-item h3 {
+  font-size: 17px;
+  font-weight: 700;
+}
+.stage-review-tag {
+  display: none;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.stage-review-tag.tag-warn {
+  display: inline-block;
+  background: #fff0d6;
+  color: #b45309;
+}
+.stage-review-tag.tag-ok {
+  display: inline-block;
+  background: #dcfce7;
+  color: #15803d;
+}
+.summary-item p {
+  color: #2c2c2e;
+  margin-bottom: 4px;
+}
+.leaderboard-card {
+  background: var(--card);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+.lb-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lb-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.lb-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+}
+.privacy-tag {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #f0f0f5;
+  color: var(--subtext);
+}
+.privacy-tag.admin-active {
+  background: #ffeceb;
+  color: var(--danger);
+}
+.lb-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.btn-small {
+  background: #f5f5f7;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+}
+.btn-small:hover {
+  background: #e5e5ea;
+}
+.btn-small.btn-admin {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.lb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+.lb-table th {
+  text-align: left;
+  color: var(--subtext);
+  font-weight: 600;
+  padding: 8px 10px;
+  border-bottom: 1px solid #e5e5ea;
+  font-size: 14px;
+}
+.lb-table td {
+  padding: 10px;
+  border-bottom: 1px solid #f0f0f2;
+}
+.rank-badge {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 14px;
+  background: #e5e5ea;
+  color: var(--text);
+}
+.rank-1 { background: #ffd60a; color: #1d1d1f; }
+.rank-2 { background: #d1d1d6; color: #1d1d1f; }
+.rank-3 { background: #f5b076; color: #1d1d1f; }
+.empty-lb {
+  text-align: center;
+  padding: 18px;
+  font-size: 15px;
+  color: var(--subtext);
+}
+.lb-footer-note {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--subtext);
+  text-align: right;
+}
+.player-bar {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+.player-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 220px;
+}
+.player-input-group label {
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.input-text {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+}
+.input-text:focus {
+  border-color: var(--accent);
+}
+.mode-switch {
+  display: flex;
+  gap: 6px;
+  background: #f5f5f7;
+  padding: 4px;
+  border-radius: 10px;
+}
+.mode-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--subtext);
+}
+.mode-btn.active {
+  background: #fff;
+  color: var(--accent);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.sticky-bar {
+  position: sticky;
+  top: 12px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.progress-text, .timer-text {
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.timer-text {
+  color: var(--accent);
+}
+.progress-track {
+  flex: 1;
+  height: 8px;
+  background: #e5e5ea;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+.stage-banner {
+  border-radius: 16px;
+  padding: 14px 20px;
+  margin: 26px 0 14px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+.stage-banner:first-child {
+  margin-top: 4px;
+}
+.stage-banner h3 {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.stage-banner span {
+  font-size: 14px;
+  font-weight: 600;
+  background: rgba(255,255,255,0.22);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.banner-s0 { background: var(--s0-grad); }
+.banner-s1 { background: var(--s1-grad); }
+.banner-s2 { background: var(--s2-grad); }
+.banner-s3 { background: var(--s3-grad); }
+
+.q-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1.5px solid rgba(0,0,0,0.06);
+  box-shadow: 0 3px 12px rgba(0,0,0,0.03);
+  transition: all 0.2s ease;
+}
+.q-card.stage-theme-0 { background: var(--s0-bg); border-color: var(--s0-border); border-left: 6px solid var(--s0-accent); }
+.q-card.stage-theme-1 { background: var(--s1-bg); border-color: var(--s1-border); border-left: 6px solid var(--s1-accent); }
+.q-card.stage-theme-2 { background: var(--s2-bg); border-color: var(--s2-border); border-left: 6px solid var(--s2-accent); }
+.q-card.stage-theme-3 { background: var(--s3-bg); border-color: var(--s3-border); border-left: 6px solid var(--s3-accent); }
+.q-card.card-wrong {
+  border: 2px solid var(--danger) !important;
+  border-left: 6px solid var(--danger) !important;
+  box-shadow: 0 4px 16px rgba(255, 59, 48, 0.14);
+}
+.q-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.q-stage {
+  font-size: 14px;
+  font-weight: 700;
+}
+.stage-theme-0 .q-stage { color: var(--s0-accent); }
+.stage-theme-1 .q-stage { color: var(--s1-accent); }
+.stage-theme-2 .q-stage { color: var(--s2-accent); }
+.stage-theme-3 .q-stage { color: var(--s3-accent); }
+
+.q-tag-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.q-type-tag {
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+.tag-single {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--accent);
+  border: 1px solid rgba(0, 113, 227, 0.25);
+}
+.tag-multi {
+  background: #f5ebff;
+  color: #8925be;
+  border: 1px solid rgba(175, 82, 222, 0.3);
+}
+.q-score-tag {
+  display: none;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+.score-pass { background: #dcfce7; color: #14532d; }
+.score-fail { background: #ffeceb; color: #b91c1c; }
+.q-title {
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  line-height: 1.45;
+  color: #1d1d1f;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.option-btn {
+  text-align: left;
+  background: rgba(255, 255, 255, 0.92);
+  border: 2px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 14px 16px;
+  line-height: 1.55;
+  font-size: 16px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.option-btn:hover {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+.option-btn.selected {
+  background: #ffffff;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.16);
+  font-weight: 600;
+}
+.option-btn.selected-multi {
+  background: #ffffff;
+  border-color: var(--multi);
+  box-shadow: 0 0 0 3px rgba(175, 82, 222, 0.18);
+  font-weight: 600;
+}
+.option-btn.correct {
+  background: #eafbe7;
+  border-color: var(--success);
+  color: #14532d;
+  font-weight: 600;
+}
+.option-btn.wrong {
+  background: #ffeceb;
+  border-color: var(--danger);
+  color: #7f1d1d;
+}
+.option-btn.missed {
+  background: #fff6e5;
+  border: 2px dashed var(--warning);
+  color: #9a3412;
+  font-weight: 600;
+}
+.opt-status-label {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.instant-check-btn {
+  margin-top: 10px;
+  background: var(--multi);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: none;
+}
+.explain-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 15px;
+  color: #3a3a3c;
+  line-height: 1.6;
+}
+.explain-box strong {
+  color: var(--text);
+}
+.submit-wrap {
+  text-align: center;
+  margin-top: 28px;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 36px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 113, 227, 0.3);
+}
+.btn-primary:hover {
+  background: #0077ed;
+}
+.result-modal {
+  display: none;
+  background: var(--card);
+  border-radius: 20px;
+  padding: 28px 24px;
+  margin-bottom: 18px;
+  text-align: center;
+  border: 2px solid var(--accent);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+.result-modal.perfect-score {
+  border: 2px solid #ff9500;
+  background: linear-gradient(180deg, #fffdf8 0%, #ffffff 100%);
+  box-shadow: 0 16px 40px rgba(255, 149, 0, 0.18);
+}
+.score-num {
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.1;
+  margin: 10px 0;
+}
+.result-modal.perfect-score .score-num {
+  background: linear-gradient(90deg, #ff2d55, #ff9500, #34c759, #0071e3, #af52de);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.rank-title {
+  font-size: 23px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.rank-desc {
+  font-size: 16px;
+  color: var(--subtext);
+  margin-bottom: 20px;
+}
+.result-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-celebrate {
+  background: linear-gradient(135deg, #ff2d55, #ff9500);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 26px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 45, 85, 0.3);
+}
+</style>
+</head>
+<body>
+<canvas id="confettiCanvas"></canvas>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-top">
+      <div class="badge">2026年11月6日（周五）正式发售新品实战训练</div>
+      <div class="hero-top-actions">
+        <button class="sound-toggle" id="soundToggleBtn" onclick="toggleSound()">音效：已开启</button>
+      </div>
+    </div>
+    <h1>Apple 11.6 开售全系设备整合闯关挑战（20题）</h1>
+    <p>涵盖 11.6 发售四大新品线：12道单选 + 8道多选，每题5分，满分100分（点击下方标签可跳转对应关卡）</p>
+    <div class="device-pills">
+      <span class="device-pill pill-s0" onclick="scrollToStage(0)">第一关：MacBook Pro PROLED XDR</span>
+      <span class="device-pill pill-s1" onclick="scrollToStage(1)">第二关：14英寸 MacBook Pro (M6)</span>
+      <span class="device-pill pill-s2" onclick="scrollToStage(2)">第三关：24英寸 iMac (M6)</span>
+      <span class="device-pill pill-s3" onclick="scrollToStage(3)">第四关：全新 iPad mini (A20 Pro)</span>
+    </div>
+  </div>
+
+  <div class="leaderboard-card">
+    <div class="lb-header">
+      <div class="lb-title-wrap">
+        <h2 id="lbTitle">门店英雄排行榜</h2>
+        <span class="privacy-tag" id="privacyBadge">公开榜：仅显示前 10 名</span>
+      </div>
+      <div class="lb-actions">
+        <button class="btn-small btn-admin" id="adminToggleBtn" onclick="toggleAdminView()">管理员看全部名次</button>
+        <button class="btn-small" id="manualAddBtn" style="display:none;" onclick="addManualEntry()">手动补录成绩</button>
+        <button class="btn-small" id="exportCsvBtn" style="display:none;" onclick="exportAllToCSV()">导出全部表格</button>
+        <button class="btn-small" id="clearLbBtn" style="display:none;" onclick="clearLeaderboard()">清空榜单</button>
+      </div>
+    </div>
+    <div id="lbContent"><div class="empty-lb">正在连接云端排行榜...</div></div>
+    <div class="lb-footer-note" id="lbFooterNote"></div>
+  </div>
+
+  <div class="player-bar">
+    <div class="player-input-group">
+      <label for="playerName">闯关人姓名：</label>
+      <input type="text" id="playerName" class="input-text" placeholder="请输入你的名字或昵称（上榜用）" />
+    </div>
+    <div class="mode-switch">
+      <button class="mode-btn active" id="modeExamBtn" onclick="setMode('exam')">整卷冲榜模式</button>
+      <button class="mode-btn" id="modeInstantBtn" onclick="setMode('instant')">即答即看模式</button>
+    </div>
+  </div>
+
+  <div class="sticky-bar">
+    <div class="progress-text" id="progressText">已答 0 / 20 题</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="timer-text" id="timerText">用时 00:00</div>
+  </div>
+
+  <div class="result-modal" id="resultBox">
+    <div class="badge" id="resultBadge" style="background:#e8f2ff;color:#0071e3;">本局战绩已计入后台榜单</div>
+    <div class="score-num" id="scoreNum">0分</div>
+    <div class="rank-title" id="rankTitle"></div>
+    <div class="rank-desc" id="rankDesc"></div>
+    <div class="result-btn-group">
+      <button class="btn-celebrate" id="replayConfettiBtn" style="display:none;" onclick="launchFullCelebration()">再来一波满分礼花+音效</button>
+      <button class="btn-primary" onclick="resetQuiz()">换下一位同事闯关</button>
+    </div>
+  </div>
+
+  <!-- 核心速查卡 -->
+  <div class="summary-card" id="summaryCard">
+    <div class="summary-toggle" onclick="toggleSummary()">
+      <h2 id="summaryTitle">11.6 开售四大新品核心速查卡（已结合你的答题情况标记复盘重点）</h2>
+      <span class="summary-status" id="summaryArrow">收起速查 ▲</span>
+    </div>
+    <div class="summary-grid open" id="summaryGrid">
+      <div class="summary-item summary-s0" id="summaryStage0">
+        <div class="summary-item-head">
+          <h3>第一关：MacBook Pro (PROLED XDR 显示屏)</h3>
+          <span class="stage-review-tag" id="stageTag0"></span>
+        </div>
+        <p><strong>芯片与存储：</strong>M5 Pro / M5 Max，最高 128GB 统一内存，最高 16TB SSD</p>
+        <p><strong>屏幕与交互：</strong>14.2 / 16.3 英寸双层串联 OLED，2000尼特峰值亮度，1000万:1对比度，P3+Adobe RGB双色域，DICOM医疗模式，内嵌式屏幕触控与灵动岛</p>
+        <p><strong>轻薄与售价：</strong>14寸 1.38kg (RMB 22,999起) / 16寸 1.82kg (RMB 27,999起)，24小时续航，3个雷雳5，合盖外接音频调校</p>
+      </div>
+      <div class="summary-item summary-s1" id="summaryStage1">
+        <div class="summary-item-head">
+          <h3>第二关：14 英寸 MacBook Pro (M6 芯片)</h3>
+          <span class="stage-review-tag" id="stageTag1"></span>
+        </div>
+        <p><strong>芯片与性能：</strong>M6 (12核CPU+12核GPU+双16核神经网络引擎)，GPU较M5提升30%(比M1快11倍)，AI比M1提升13倍</p>
+        <p><strong>内存与连接：</strong>16GB起步(最高32GB，170GB/s带宽)，Wi-Fi 7 + 蓝牙 6，3个雷雳4，外接最多2台显示器</p>
+        <p><strong>屏幕与售价：</strong>Liquid 视网膜 XDR (1600尼特HDR峰值)，24小时续航，深空黑/银色，RMB 15,999起 (教育 RMB 15,199起)</p>
+      </div>
+      <div class="summary-item summary-s2" id="summaryStage2">
+        <div class="summary-item-head">
+          <h3>第三关：24 英寸 iMac (M6 芯片)</h3>
+          <span class="stage-review-tag" id="stageTag2"></span>
+        </div>
+        <p><strong>芯片与性能：</strong>M6 (10核或12核版，双16核神经网络引擎)，本地AI较M4提升5倍(比M1快12倍)，比畅销Intel机型快18倍</p>
+        <p><strong>连接与屏幕：</strong>24英寸4.5K视网膜屏(500尼特)，SSD提速2倍，Wi-Fi 7+蓝牙6，12核版配4个雷雳4、标配触控ID键盘、可选2.5Gb网口与纳米纹理</p>
+        <p><strong>配色与售价：</strong>7种缤纷色彩，同色系USB-C妙控配件，10核 RMB 12,499起 / 12核 RMB 13,999起</p>
+      </div>
+      <div class="summary-item summary-s3" id="summaryStage3">
+        <div class="summary-item-head">
+          <h3>第四关：全新 iPad mini (A20 Pro + OLED)</h3>
+          <span class="stage-review-tag" id="stageTag3"></span>
+        </div>
+        <p><strong>屏幕与机身：</strong>8.5英寸超视网膜XDR OLED屏(边框收窄24%，1200尼特峰值，最低1尼特，可选纳米纹理)，薄至5.4mm，IP67抗水防尘</p>
+        <p><strong>芯片与通信：</strong>2纳米 A20 Pro (AI提升4.5倍，512GB配双16核共32核神经网络引擎)，N1无线芯片(Wi-Fi 7)+C2蜂窝模块</p>
+        <p><strong>音影与售价：</strong>Acoustic Display屏幕发声，长边12MP前置摄像头，午夜色/星光色，RMB 5,499起 (蜂窝版 RMB 6,799起)</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="quizContainer"></div>
+  <div class="submit-wrap">
+    <button class="btn-primary" id="submitBtn" onclick="submitQuiz()">提交试卷并冲榜</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://ityoclhvzhmihgwahkpv.supabase.co'; 
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0eW9jbGh2emhtaWhnd2Foa3B2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4NjQ3NTEsImV4cCI6MjEwOTQ0MDc1MX0.b_J9P7RlCGWy0KB0q3YWMZmyX1R7ISyCoVIpNnEcueU'; 
+
+let supabaseClient = null;
+let latestCloudData = [];
+const ADMIN_PASSWORDS = ["8888", "1106", "admin", "lynn", "Lynn"];
+const PUBLIC_TOP_LIMIT = 10;
+
+const STAGE_HEADERS = [
+  { title: "第一关 · 配备 PROLED XDR 显示屏的 MacBook Pro（M5 Pro / M5 Max）", sub: "第 1 - 5 题" },
+  { title: "第二关 · 搭载 M6 芯片的新款 14 英寸 MacBook Pro（Liquid 视网膜 XDR）", sub: "第 6 - 10 题" },
+  { title: "第三关 · 搭载 M6 芯片的新款 24 英寸 iMac", sub: "第 11 - 15 题" },
+  { title: "第四关 · 全新 iPad mini（A20 Pro 芯片 + OLED 超视网膜 XDR）", sub: "第 16 - 20 题" }
+];
+
+const questions = [
+  {stage: "第一关：配备 PROLED XDR 显示屏的 MacBook Pro（M5 Pro / M5 Max）",q: "1. 【多选】关于 11 月 6 日发售的配备 PROLED XDR 显示屏的全新 MacBook Pro，以下哪些属于首次登陆 Mac 的重大突破？",options: ["首次采用突破性双层串联 OLED 技术的 PROLED XDR 显示屏，彻底消除暗场光晕","首次取消实体妙控键盘与触控板设计，改为双屏纯虚拟触控输入与手势交互工作台","首次为 Mac 引入直观的屏幕触控体验，触控传感器直接内嵌于显示面板中以降低延迟","首次将灵动岛与实时活动引入 Mac，并首次针对合上盖子外接显示器场景进行了专属音频调校"],answer: [0, 2, 3],tip: "对客金句：全新 MacBook Pro 集双层串联 OLED 屏、内嵌式低延迟触控和灵动岛于一身，既能用熟悉的全尺寸键盘和触控板，也能直接上手点触屏幕，合盖外接显示器时音质同样出众"},
+  {stage: "第一关：配备 PROLED XDR 显示屏的 MacBook Pro（M5 Pro / M5 Max）",q: "2. 专业影视调色师和户外摄影师询问 PROLED XDR 显示屏的亮度和对比度表现，以下哪组参数完全准确？",options: ["全屏持续亮度 1000 尼特，HDR 峰值亮度最高可达 2000 尼特，户外 SDR 峰值最高 1000 尼特，对比度高达 2,000,000:1","全屏持续亮度 1000 尼特，HDR 及户外 SDR 峰值亮度最高均可达 2000 尼特，对比度高达 10,000,000:1","全屏持续亮度 1200 尼特，HDR 及户外 SDR 峰值亮度最高均可达 1600 尼特，对比度高达 1,000,000:1","全屏持续亮度 800 尼特，HDR 及户外 SDR 峰值亮度最高均可达 3000 尼特，对比度高达 10,000,000:1"],answer: 1,tip: "对客金句：PROLED XDR 不仅全屏持续亮度保持 1000 尼特，HDR 和户外强光下的 SDR 峰值亮度都飙升到了 2000 尼特，配合 1000 万比 1 的对比度和无光晕纯净黑位，在户外强光下修图调色依然纤毫毕现"},
+  {stage: "第一关：配备 PROLED XDR 显示屏的 MacBook Pro（M5 Pro / M5 Max）",q: "3. 【多选】平面设计师、影视后期与医学研究人员非常关注 PROLED XDR 显示屏的专业色彩与模式，以下哪些说法是正确的？",options: ["首次在便携式 Mac 单一默认预设中同时原生支持 P3 与 Adobe RGB 双广色域，覆盖超 80% Rec. 2020","新增无伪影 DICOM 医疗成像参考模式，并支持 Apple Pro Display Calibrator 自定义校准","仅支持传统 CIE 1931 校准标准，在切换 P3 与 Adobe RGB 色域时必须重新启动电脑才能生效","支持 Genlock 同步技术，可将屏幕刷新率与摄像机拍摄同步，减少虚拟制作现场拍摄的重影与撕裂"],answer: [0, 1, 3],tip: "对客金句：它是首款在一个默认预设里同时原生涵盖 P3 和 Adobe RGB 双广色域的便携式 Mac，印刷青绿色彩不丢失，还新增了无伪影 DICOM 医疗成像参考模式和虚拟拍摄急需的 Genlock 同步功能"},
+  {stage: "第一关：配备 PROLED XDR 显示屏的 MacBook Pro（M5 Pro / M5 Max）",q: "4. 顾客担心 16 英寸和 14 英寸 PROLED XDR 款 MacBook Pro 出差携带太沉，机身重量与前代相比有什么变化？",options: ["14.2 英寸减轻约 220 克（仅约 1.38 千克），16.3 英寸减轻约 320 克（仅约 1.82 千克），机身更薄且续航最长仍达 24 小时","14.2 英寸减轻约 150 克（仅约 1.45 千克），16.3 英寸减轻约 200 克（仅约 1.95 千克），机身更薄但续航调整为最长 20 小时","由于新增了内嵌式触控传感器与刚性支撑层，14 英寸与 16 英寸机型重量均比前代轻微增加约 120 克，续航提升至 26 小时","两款机型的重量与厚度均与前代 Liquid 视网膜 XDR 机型保持完全一致，仅将屏幕边框收窄至 3.5 毫米并保留 24 小时续航"],answer: 0,tip: "对客金句：得益于更省空间的双层串联 OLED 面板，14 英寸减重约 220 克至 1.38 千克，16 英寸更是减重约 320 克至 1.82 千克，边框窄至 4.6mm，满载 24 小时超长续航却轻盈得像换了个量级"},
+  {stage: "第一关：配备 PROLED XDR 显示屏的 MacBook Pro（M5 Pro / M5 Max）",q: "5. 关于配备 PROLED XDR 显示屏的 MacBook Pro 的高阶扩展能力与起售价，以下哪项完全正确？",options: ["最高可选 96GB 统一内存和 8TB 存储，配备 3 个雷雳 4 端口（M5 Pro 外接最多 2 台显示器 / M5 Max 最多 4 台），14 英寸起售价 RMB 19,999，16 英寸起售价 RMB 24,999","最高可选 128GB 统一内存和 8TB 存储，配备 4 个雷雳 5 端口（全系最多外接 3 台显示器），14 英寸起售价 RMB 21,999，16 英寸起售价 RMB 26,999","最高可选 64GB 统一内存和 16TB 存储，仅提供深空黑色外观与 3 个雷雳 5 端口（最多外接 2 台显示器），14 英寸起售价 RMB 23,999，16 英寸起售价 RMB 28,999","最高可选 128GB 统一内存和 16TB 存储，配备 3 个雷雳 5 端口（M5 Pro 外接最多 3 台显示器 / M5 Max 最多 4 台），14 英寸起售价 RMB 22,999，16 英寸起售价 RMB 27,999"],answer: 3,tip: "对客金句：M5 Pro 与 M5 Max 机型最高可选配 128GB 统一内存与 16TB 超大固态硬盘，标配 3 个雷雳 5 端口、Wi-Fi 7 与蓝牙 6，14 英寸 RMB 22,999 起、16 英寸 RMB 27,999 起"},
+  {stage: "第二关：搭载 M6 芯片的新款 14 英寸 MacBook Pro（Liquid 视网膜 XDR）",q: "6. 【多选】关于 11 月 6 日发售的搭载 M6 芯片的新款 14 英寸 MacBook Pro，以下哪些核心升级描述是准确的？",options: ["M6 芯片集成 12 核中央处理器和 12 核图形处理器，比前代 M5 各增加 2 颗核心","首次搭载双 16 核神经网络引擎，神经网络引擎性能相比 M5 提升最高可达 1.9 倍","为进一步减薄机身厚度，取消了 HDMI 端口与 SDXC 卡插槽，仅保留三个雷雳 4 接口与耳机插孔","图形处理器每颗核心均内置神经网络加速器，图形性能比 M1 提升最高达 11 倍，AI 性能比 M1 提升最高达 13 倍"],answer: [0, 1, 3],tip: "对客金句：全新 M6 芯片升级到 12 核 CPU、12 核 GPU 和首款双 16 核神经网络引擎，不仅图形性能比 M5 提升 30%，从 M1 升级的老用户更能体验到 11 倍图形提速和 13 倍 AI 算力飞跃"},
+  {stage: "第二关：搭载 M6 芯片的新款 14 英寸 MacBook Pro（Liquid 视网膜 XDR）",q: "7. 搭载 M6 芯片的新款 14 英寸 MacBook Pro 在内存带宽、无线网络与外接显示器方面的规格是？",options: ["24GB 统一内存起步（最高可选 64GB），内存带宽升至最高 200GB/s，支持 Wi-Fi 7 与蓝牙 6，可外接至多 3 台高分辨率显示器","16GB 统一内存起步（最高可选 32GB），内存带宽升至最高 170GB/s，支持 Wi-Fi 7 与蓝牙 6，可外接至多 2 台显示器","16GB 统一内存起步（最高可选 32GB），内存带宽保持 120GB/s，支持 Wi-Fi 6E 与蓝牙 5.3，仅可外接 1 台 6K 显示器","8GB 统一内存起步（最高可选 24GB），内存带宽升至最高 150GB/s，支持 Wi-Fi 7 与蓝牙 6，并升级配备 3 个雷雳 5 端口"],answer: 1,tip: "对客金句：M6 款 14 英寸 MacBook Pro 标配 16GB 统一内存，内存带宽高达 170GB/s，全面支持高速 Wi-Fi 7 与蓝牙 6，配合三个雷雳 4 端口与 HDMI，轻松外接两台高分辨率显示器"},
+  {stage: "第二关：搭载 M6 芯片的新款 14 英寸 MacBook Pro（Liquid 视网膜 XDR）",q: "8. 顾客拿着老款 Intel 或 M1 芯片 MacBook Pro 来店咨询升级 M6 款 14 英寸 MacBook Pro，续航和快充表现如何介绍？",options: ["续航最长可达 22 小时（比 Intel 机型增加最长 10 小时，比 M1 机型增加最长 2 小时），搭配 140W 适配器 15 分钟可充至最多 50% 电量","续航最长可达 24 小时，但仅限连接电源适配器时才能释放 M6 芯片的全部 12 核性能，使用电池供电时会自动降低主频","续航最长可达 24 小时（比 Intel 机型增加最长 14 小时，比 M1 机型增加最长 4 小时），搭配 96W 及以上适配器 30 分钟可充至最多 50% 电量","续航最长可达 20 小时（比 Intel 机型增加最长 12 小时，比 M1 机型增加最长 3 小时），仅支持通过 MagSafe 3 接口慢充，充至 50% 约需 60 分钟"],answer: 2,tip: "对客金句：它拥有 Mac 迄今最长的 24 小时电池续航，比 Intel 老机型多出整整 14 小时，而且无论插电还是用电池性能都满血释放，喝杯咖啡 30 分钟就能快充至 50%"},
+  {stage: "第二关：搭载 M6 芯片的新款 14 英寸 MacBook Pro（Liquid 视网膜 XDR）",q: "9. 顾客在门店同时看到两款 11 月 6 日开售的 14 英寸 MacBook Pro（M6 款 vs PROLED XDR 款），如何帮顾客快速理清核心定位差异？",options: ["M6 款（RMB 14,999 起）配备双层串联 OLED 屏（无触控）与雷雳 4，适合日常办公；PROLED XDR 款（RMB 22,999 起）搭载 M6 Pro/Max、支持屏幕触控与灵动岛，仅面向专业影视工作室开放订购","M6 款（RMB 15,999 起）配备 Liquid 视网膜 XDR 屏（1600尼特峰值，无触控）与雷雳 4，适合学生、商务与跨界创作者；PROLED XDR 款（RMB 22,999 起）搭载 M5 Pro/Max、双层串联 OLED 触控屏、灵动岛与雷雳 5，专为重度专业工作流打造","M6 款（RMB 15,999 起）同样支持屏幕触控与灵动岛，但仅配备雷雳 4 端口与单风扇散热；PROLED XDR 款（RMB 22,999 起）主要升级了 2000 尼特峰值亮度与雷雳 5 端口，两款搭载的芯片完全相同","两款 14 英寸机型均采用 Liquid 视网膜 XDR Mini-LED 显示屏且均不支持触控，唯一区别是 RMB 15,999 款搭载 M6 芯片，而 RMB 22,999 款搭载 M5 Pro 芯片与更大容量的固态硬盘"],answer: 1,tip: "对客金句：预算 1.6 万左右选 M6 款，既有 24 小时续航和 1600 尼特 Liquid 视网膜 XDR 屏，性价比极高；追求极致双层 OLED 屏幕、触控交互、灵动岛和满血多屏扩展则选 PROLED XDR 款"},
+  {stage: "第二关：搭载 M6 芯片的新款 14 英寸 MacBook Pro（Liquid 视网膜 XDR）",q: "10. 搭载 M6 芯片的新款 14 英寸 MacBook Pro 提供哪些外观颜色？起售价与教育优惠起售价分别是多少？",options: ["提供天蓝色、星光色与银色三款外观，起售价 RMB 14,999，高校师生教育优惠起售价 RMB 14,199","提供深空黑色（采用阳极氧化密封工艺减少指纹）和银色，起售价 RMB 16,999，教育优惠起售价 RMB 15,999","提供午夜色和深空灰色两款专业金属外观，起售价 RMB 15,999，高校师生教育优惠起售价 RMB 14,799","提供深空黑色（采用阳极氧化密封工艺减少指纹）和银色，起售价 RMB 15,999，教育优惠起售价 RMB 15,199"],answer: 3,tip: "对客金句：提供深空黑色和银色两款经典外观，深空黑色专门采用阳极氧化密封工艺防指纹，起售价 RMB 15,999，高校师生教育优惠仅需 RMB 15,199 起"},
+  {stage: "第三关：搭载 M6 芯片的新款 24 英寸 iMac",q: "11. 【多选】关于 11 月 6 日发售的搭载 M6 芯片的新款 24 英寸 iMac，以下哪些性能对比数据是官方认证的卖点？",options: ["由于采用极致纤薄的无风扇一体机机身设计，仅支持调用云端大模型，不支持本地运行大语言模型","使用 LM Studio 运行设备端 AI 的性能相比 M4 机型提升最高可达 5 倍，相比 M1 机型提升最高可达 12 倍","相比搭载 Intel 芯片的畅销 iMac 机型，整体性能提升最高可达 18 倍","照片编辑（Affinity）、光线追踪游戏性能以及固态硬盘（SSD）读写速度相比 M4 机型均提升最高可达 2 倍"],answer: [1, 2, 3],tip: "对客金句：M6 iMac 的本地 AI 速度比上代 M4 直接飙升最高 5 倍，比 M1 快 12 倍，比老款 Intel iMac 快达 18 倍，连固态硬盘读写速度都翻倍了，开机和加载大型照片库几乎秒开"},
+  {stage: "第三关：搭载 M6 芯片的新款 24 英寸 iMac",q: "12. 小型工作室顾客想采购新款 M6 iMac 处理大型视频素材，对网络速度和多屏扩展有高要求，以下哪项介绍准确？",options: ["支持高速 Wi-Fi 7 与蓝牙 6；12 核机型配备 4 个雷雳 5 端口，标配万兆（10Gb）以太网，并支持外接最多三台 6K Pro Display XDR 显示器","支持 Wi-Fi 6E 与蓝牙 5.3；全系标配 2 个雷雳 4 端口与千兆以太网，仅支持外接最多一台 6K 显示器组双屏工作台","支持高速 Wi-Fi 7 与蓝牙 6；12 核机型配备 4 个雷雳 4 端口，可选配 2.5Gb 以太网（有线速度提升 2.5 倍），并支持外接最多两台 6K 显示器","支持高速 Wi-Fi 7 与蓝牙 6；但由于一体机电源适配器体积限制，取消了有线以太网端口，必须额外购买 USB-C 转接器且最多外接一台 4K 显示器"],answer: 2,tip: "对客金句：新款 iMac 升级支持 Wi-Fi 7 和蓝牙 6，12 核高配版可选配 2.5Gb 高速网口，4 个雷雳 4 端口能同时外接两台 6K 显示器，跟本身 4.5K 屏组成超 5000 万像素的豪华工作台"},
+  {stage: "第三关：搭载 M6 芯片的新款 24 英寸 iMac",q: "13. 顾客在对比新款 M6 iMac 的 RMB 12,499（10核CPU/10核GPU）与 RMB 13,999（12核CPU/12核GPU）两个版本，12 核版本有哪些专属优势？",options: ["配备 4 个雷雳 4 端口、标配带有触控 ID 的妙控键盘，并可选配纳米纹理玻璃显示屏与 2.5Gb 以太网","屏幕尺寸从 24 英寸升级到 27 英寸 5K 视网膜屏、标配妙控板，并独享紫色、橙色与绿色三款多彩机身外观","标配 32GB 统一内存与 1TB 固态硬盘、内置双风扇主动散热系统，并将前置摄像头升级为 4800 万像素支持舞台光效","配备 4 个雷雳 5 端口、电源适配器升级为 140W 快充头，而 RMB 12,499 的 10 核基础版本随机不附赠鼠标和键盘"],answer: 0,tip: "对客金句：加 1500 元上 12 核版本，不仅 CPU 和 GPU 各多 2 颗核心，还直接标配带触控 ID 的同色系妙控键盘、4 个满血雷雳 4 端口，如果房间采光强还能选配抗眩光的纳米纹理显示屏"},
+  {stage: "第三关：搭载 M6 芯片的新款 24 英寸 iMac",q: "14. 【多选】关于新款 M6 iMac 的外观设计、屏幕、音影系统与随机配件，以下哪些描述是正确的？",options: ["提供蓝、绿、粉、黄、紫、橙、银共 7 种缤纷配色，配备 24 英寸 4.5K 视网膜显示屏（500 尼特亮度、P3 广色域）","随机附赠的同色系妙控键盘与妙控鼠标仍采用 Lightning 闪电接口，需使用转换器连接电脑充电","配备 1200 万像素 Center Stage 摄像头（支持桌上视角功能），以及支持杜比全景声空间音频的六扬声器系统","配备自带 USB-C 端口的同色系妙控键盘、鼠标或触控板，只需一根连接线即可为所有常用设备充电"],answer: [0, 2, 3],tip: "对客金句：七种多巴胺配色连配带的键盘鼠标触控板都是同色系且全系 USB-C 接口，一根线就能通用充电；1200 万像素摄像头带桌上视角，上网课或给客户演示手头样品都特别清楚"},
+  {stage: "第三关：搭载 M6 芯片的新款 24 英寸 iMac",q: "15. 新款 Mac 家族（含 M6 iMac 与新款 MacBook Pro）均预装 macOS 27 Golden Gate，顾客问新系统有什么感知最强的升级？",options: ["首次将 iPadOS 的台前调度强制设为默认桌面，移除了顶部传统菜单栏与访达边栏，并要求所有应用必须全屏运行以节省统一内存","重构搜索底层架构使聚焦、照片和邮件实现全天实时索引；升级 Liquid Glass 外观并新增设置滑块（可在超通透到饱满色调间自由调节）；隔空投送与 Safari 载入更快","内置本地图形转换虚拟机可直接运行 Windows 11 大型游戏，并将 iPhone 镜像功能改为付费订阅服务，同时取消了隔空投送功能","仅针对配备触控屏的 MacBook Pro 开放 Liquid Glass 外观效果，搭载 M6 芯片的 iMac 与 14 英寸 MacBook Pro 无法调节图标与通透度"],answer: 1,tip: "对客金句：macOS 27 不仅隔空投送和打开网页更快，找邮件找照片也是全天实时秒搜，而且新增了 Liquid Glass 调节滑块，喜欢超通透还是饱满色彩都能随心滑动定制"},
+  {stage: "第四关：全新 iPad mini（A20 Pro 芯片 + OLED 超视网膜 XDR）",q: "16. 【多选】11 月 6 日发售的全新 iPad mini 被称为“有史以来最大更新”，以下哪些属于它的核心升级点？",options: ["首次采用 8.5 英寸超视网膜 XDR OLED 显示屏（边框收窄 24%），并提供纳米纹理显示屏选项","机身薄至 5.4 毫米，便携性更胜以往","首次具备 IP67 级别防尘抗水性能（可在最深 1 米水下停留最长 30 分钟）","搭载采用 2 纳米工艺的 A20 Pro 芯片，AI 性能相比前代提升最高达 4.5 倍，图形性能提升最高达 2.7 倍","集成开创性 Acoustic Display 屏幕发声技术，并将 1200 万像素前置摄像头移至机身长边（横向）"],answer: [0, 1, 2, 3, 4],tip: "对客金句：本题 5 项全对！全新 iPad mini 换上了 8.5 英寸 OLED 屏、5.4 毫米超薄机身、2 纳米 A20 Pro 芯片、横向前置摄像头与 Acoustic Display 屏幕发声，甚至做到了 IP67 级抗水防尘，真正实现了小屏旗舰大满贯"},
+  {stage: "第四关：全新 iPad mini（A20 Pro 芯片 + OLED 超视网膜 XDR）",q: "17. 经常在夜间读书或户外作业的顾客询问全新 iPad mini 的屏幕亮度与显示参数，以下哪项数据是准确的？",options: ["峰值亮度最高达 1200 尼特（前代 2 倍以上），全屏持续亮度 600 尼特，对比度 2,000,000:1，最小亮度可低至 1 尼特，并可选配纳米纹理玻璃","峰值亮度最高达 2000 尼特（与 iPad Pro 相同），全屏持续亮度 1000 尼特，对比度 10,000,000:1，最小亮度为 2 尼特，全系标配纳米纹理玻璃","峰值亮度最高达 800 尼特，采用 Mini-LED 分区背光技术，对比度 1,000,000:1，最小亮度为 5 尼特，不支持选配纳米纹理玻璃","峰值亮度最高达 1600 尼特，全屏持续亮度 500 尼特，支持 10Hz 至 120Hz ProMotion 自适应刷新率，最小亮度可低至 1 尼特"],answer: 0,tip: "对客金句：峰值亮度翻倍达到 1200 尼特，户外加上纳米纹理玻璃不怕反光；晚上关灯看书最低能降到 1 尼特，柔和不刺眼，连飞行员在暗光驾驶舱看电子航图都特别舒适"},
+  {stage: "第四关：全新 iPad mini（A20 Pro 芯片 + OLED 超视网膜 XDR）",q: "18. 【多选】关于全新 iPad mini 的音频系统、密封机身与无线通信芯片升级，以下哪些描述是正确的？",options: ["蜂窝网络机型仍保留实体 nano-SIM 卡槽，不支持通过 eSIM 办理数据套餐或虚拟转网","采用开创性 Acoustic Display 技术，显示屏两端低音单元相互呼应，定制高音单元藏于玻璃面板与铝金属机身之间","Acoustic Display 技术实现了密封机身，助力 iPad mini 防尘抗水性能达到 IP67 级别","搭载 Apple 自研 N1 无线芯片（支持 Wi-Fi 7、蓝牙 6、Thread）与新一代 C2 蜂窝调制解调器（数据速度提升最高达 50%）"],answer: [1, 2, 3],tip: "对客金句：创新的 Acoustic Display 技术把高音单元巧妙藏在玻璃和机身之间，既让声音直接从屏幕方向饱满传出，又做到了严丝合缝的 IP67 密封抗水，泳池边看书或雨天户外作业都安心"},
+  {stage: "第四关：全新 iPad mini（A20 Pro 芯片 + OLED 超视网膜 XDR）",q: "19. 顾客询问全新 iPad mini 的容量版本、神经网络引擎配置以及外接显示器能力，以下哪项回答准确？",options: ["提供 64GB、256GB、1TB 三种容量（全系标配单 16 核神经网络引擎），连接外接显示器时仅支持 1080p 屏幕镜像，不支持扩展显示模式","提供 128GB、256GB、512GB 三种容量（其中 512GB 搭载双 16 核共 32 核神经网络引擎），运行 iPadOS 27.2 连接外接显示器时支持扩展显示模式","提供 256GB、512GB、2TB 三种容量（其中 1TB 及以上才搭载双 16 核神经网络引擎），必须搭配妙控键盘才能开启外接显示器扩展显示模式","提供 128GB、256GB、512GB 三种容量（全系搭载 8 核神经网络引擎），仅无线局域网 + 蜂窝网络机型支持外接显示器扩展显示模式"],answer: 1,tip: "对客金句：128GB 起步，重度 AI 和创作玩家直上 512GB 还能解锁满血双 16 核（共 32 核）神经网络引擎，而且升级 iPadOS 27.2 后连上显示器就能开扩展显示模式，小机身秒变多窗口工作站"},
+  {stage: "第四关：全新 iPad mini（A20 Pro 芯片 + OLED 超视网膜 XDR）",q: "20. 【多选】关于全新 iPad mini 的外观配色、起售价、配件及 11.6 新品专属权益，以下哪些说法是正确的？",options: ["提供午夜色、星光色两款外观；无线局域网机型 RMB 5,499 起（教育优惠 RMB 5,099 起），无线局域网 + 蜂窝网络机型 RMB 6,799 起","新款 iPad mini 仅兼容第一代和第二代 Apple Pencil，不支持 Apple Pencil Pro 的轻捏与查找功能","支持 Apple Pencil Pro（RMB 999，支持轻捏、侧旋与查找）和 Apple Pencil（USB-C）（RMB 649），以及全新科技织物智能双面夹（海军蓝色、浅褐色，RMB 599）","购买符合条件的新款 Mac 或新款 iPad 的顾客，可免费试用 Apple 创作坊（Apple Creator Studio）三个月"],answer: [0, 2, 3],tip: "对客金句：全新 iPad mini 午夜色和星光色 RMB 5,499 起，搭档 Apple Pencil Pro 和新款科技织物双面夹手感绝佳，而且买新 iPad 或新 Mac 还送 3 个月 Apple 创作坊免费试用，整套专业创意软件直接配齐"}
+];
+
+const OPTION_LABELS = ["A", "B", "C", "D", "E", "F"];
+const userAnswers = questions.map(q => Array.isArray(q.answer) ? [] : null);
+const questionRevealed = questions.map(() => false);
+let currentMode = "exam";
+let submitted = false;
+let adminUnlocked = false;
+let soundEnabled = true;
+let startTime = Date.now();
+let elapsedSeconds = 0;
+let timerInterval = null;
+
+function scrollToStage(stageIdx) {
+  const el = document.getElementById(`stage_banner_${stageIdx}`);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// 音效
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) { const A = window.AudioContext || window.webkitAudioContext; if (A) audioCtx = new A(); }
+  if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+function toggleSound() { soundEnabled = !soundEnabled; document.getElementById("soundToggleBtn").textContent = soundEnabled ? "音效：已开启" : "音效：已静音"; if (soundEnabled) playTapSound(true); }
+function playTapSound(isSelecting = true) {
+  if (!soundEnabled) return; const c = getAudioCtx(); if (!c) return;
+  const o = c.createOscillator(); const g = c.createGain(); o.type = "sine";
+  o.frequency.setValueAtTime(isSelecting ? 520 : 420, c.currentTime);
+  o.frequency.exponentialRampToValueAtTime(isSelecting ? 760 : 320, c.currentTime + 0.065);
+  g.gain.setValueAtTime(0.12, c.currentTime); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + 0.065);
+  o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + 0.07);
+}
+function playPopBurstSound(delaySec = 0) {
+  if (!soundEnabled) return; const c = getAudioCtx(); if (!c) return; const start = c.currentTime + delaySec;
+  const o = c.createOscillator(); const g = c.createGain(); o.type = "triangle";
+  o.frequency.setValueAtTime(160, start); o.frequency.exponentialRampToValueAtTime(42, start + 0.18);
+  g.gain.setValueAtTime(0.28, start); g.gain.exponentialRampToValueAtTime(0.001, start + 0.18);
+  o.connect(g); g.connect(c.destination); o.start(start); o.stop(start + 0.19);
+  const b = c.createBuffer(1, c.sampleRate * 0.22, c.sampleRate); const d = b.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const n = c.createBufferSource(); n.buffer = b; const f = c.createBiquadFilter(); f.type = "bandpass"; f.frequency.setValueAtTime(1800, start);
+  const ng = c.createGain(); ng.gain.setValueAtTime(0.18, start); ng.gain.exponentialRampToValueAtTime(0.001, start + 0.22);
+  n.connect(f); f.connect(ng); ng.connect(c.destination); n.start(start); n.stop(start + 0.22);
+}
+function playPerfectCelebrationAudio() {
+  if (!soundEnabled) return; const c = getAudioCtx(); if (!c) return;
+  [{f:523.25,t:0,d:0.14},{f:659.25,t:0.12,d:0.14},{f:783.99,t:0.24,d:0.14},{f:1046.50,t:0.36,d:0.45},{f:783.99,t:0.56,d:0.14},{f:1046.50,t:0.70,d:0.65}].forEach(n => {
+    const o = c.createOscillator(); const g = c.createGain(); o.type = "triangle";
+    o.frequency.setValueAtTime(n.f, c.currentTime + n.t); g.gain.setValueAtTime(0.001, c.currentTime + n.t);
+    g.gain.linearRampToValueAtTime(0.22, c.currentTime + n.t + 0.02); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + n.t + n.d);
+    o.connect(g); g.connect(c.destination); o.start(c.currentTime + n.t); o.stop(c.currentTime + n.t + n.d + 0.02);
+  });
+  playPopBurstSound(0.02); playPopBurstSound(0.35); playPopBurstSound(0.95); playPopBurstSound(1.50);
+}
+function playStandardSubmitAudio(score) {
+  if (!soundEnabled) return; const c = getAudioCtx(); if (!c) return;
+  const freqs = score >= 75 ? [440, 554.37, 659.25] : [392, 440];
+  freqs.forEach((f, i) => { const o = c.createOscillator(); const g = c.createGain(); o.type = "sine"; o.frequency.setValueAtTime(f, c.currentTime + i * 0.11); g.gain.setValueAtTime(0.15, c.currentTime + i * 0.11); g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + i * 0.11 + 0.25); o.connect(g); g.connect(c.destination); o.start(c.currentTime + i * 0.11); o.stop(c.currentTime + i * 0.11 + 0.26); });
+}
+
+// 礼花
+const confettiCanvas = document.getElementById("confettiCanvas"); const ctx = confettiCanvas.getContext("2d");
+let confettiParticles = []; let confettiAnimId = null; let confettiTimers = [];
+const CONFETTI_COLORS = ["#ff2d55", "#ff9500", "#ffcc00", "#28cd41", "#0071e3", "#5ac8fa", "#af52de", "#ff3b30", "#30d158"];
+function resizeConfettiCanvas() { confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
+window.addEventListener("resize", resizeConfettiCanvas); resizeConfettiCanvas();
+function createParticle(x, y, vx, vy, shape) { return { x, y, vx, vy, size: Math.random() * 8 + 6, color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)], rotation: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.22, wobble: Math.random() * Math.PI * 2, wobbleSpeed: Math.random() * 0.1 + 0.05, gravity: 0.22 + Math.random() * 0.1, drag: 0.985, opacity: 1, shape: shape || (Math.random() > 0.3 ? "rect" : "circle") }; }
+function fireEdgeCannons() {
+  const w = confettiCanvas.width; const h = confettiCanvas.height;
+  [h * 0.85, h * 0.5, h * 0.2].forEach(y => { for (let i = 0; i < 38; i++) { const a = (-Math.PI / 3) + (Math.random() * Math.PI / 2.2); const s = Math.random() * 18 + 10; confettiParticles.push(createParticle(0, y, Math.cos(a) * s, Math.sin(a) * s - 4)); } });
+  [h * 0.85, h * 0.5, h * 0.2].forEach(y => { for (let i = 0; i < 38; i++) { const a = (-Math.PI * 2 / 3) - (Math.random() * Math.PI / 2.2); const s = Math.random() * 18 + 10; confettiParticles.push(createParticle(w, y, Math.cos(a) * s, Math.sin(a) * s - 4)); } });
+}
+function fireFullScreenConfetti() {
+  const w = confettiCanvas.width; const h = confettiCanvas.height;
+  for (let b = 0; b < 5; b++) { const cx = w * (0.15 + Math.random() * 0.7); const cy = h * (0.15 + Math.random() * 0.45); for (let i = 0; i < 55; i++) { const a = Math.random() * Math.PI * 2; const s = Math.random() * 14 + 3; confettiParticles.push(createParticle(cx, cy, Math.cos(a) * s, Math.sin(a) * s)); } }
+  for (let i = 0; i < 160; i++) { confettiParticles.push(createParticle(Math.random() * w, -20 - Math.random() * h * 0.4, (Math.random() - 0.5) * 6, Math.random() * 5 + 2)); }
+}
+function animateConfetti() {
+  ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  for (let i = confettiParticles.length - 1; i >= 0; i--) {
+    const p = confettiParticles[i]; p.vx *= p.drag; p.vy = p.vy * p.drag + p.gravity; p.x += p.vx + Math.sin(p.wobble) * 1.2; p.y += p.vy; p.rotation += p.rotSpeed; p.wobble += p.wobbleSpeed;
+    if (p.y > confettiCanvas.height + 40) p.opacity -= 0.08;
+    if (p.opacity <= 0) { confettiParticles.splice(i, 1); continue; }
+    ctx.save(); ctx.globalAlpha = Math.max(0, p.opacity); ctx.translate(p.x, p.y); ctx.rotate(p.rotation); ctx.fillStyle = p.color;
+    if (p.shape === "circle") { ctx.beginPath(); ctx.arc(0, 0, p.size * 0.45, 0, Math.PI * 2); ctx.fill(); } else { ctx.fillRect(-p.size / 2, -p.size / 3, p.size, p.size * 0.66); }
+    ctx.restore();
+  }
+  if (confettiParticles.length > 0) confettiAnimId = requestAnimationFrame(animateConfetti); else confettiAnimId = null;
+}
+function stopConfetti() { confettiTimers.forEach(t => clearTimeout(t)); confettiTimers = []; confettiParticles = []; if (confettiAnimId) { cancelAnimationFrame(confettiAnimId); confettiAnimId = null; } ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height); }
+function launchFullCelebration() {
+  stopConfetti(); resizeConfettiCanvas(); playPerfectCelebrationAudio(); fireEdgeCannons(); if (!confettiAnimId) animateConfetti();
+  confettiTimers.push(setTimeout(() => fireFullScreenConfetti(), 350)); confettiTimers.push(setTimeout(() => fireEdgeCannons(), 950));
+  confettiTimers.push(setTimeout(() => fireFullScreenConfetti(), 1500)); confettiTimers.push(setTimeout(() => fireFullScreenConfetti(), 2400));
+}
+
+// 速查卡
+function toggleSummary() {
+  const grid = document.getElementById("summaryGrid"); const arrow = document.getElementById("summaryArrow");
+  const isOpen = grid.classList.toggle("open");
+  arrow.textContent = isOpen ? "收起速查 ▲" : "展开速查 ▼";
+}
+function highlightSummaryStagesAfterSubmit() {
+  for (let stageIdx = 0; stageIdx < 4; stageIdx++) {
+    const startQ = stageIdx * 5; let wrongCount = 0;
+    for (let q = startQ; q < startQ + 5; q++) { if (!checkQuestionCorrect(q)) wrongCount++; }
+    const box = document.getElementById(`summaryStage${stageIdx}`); const tag = document.getElementById(`stageTag${stageIdx}`);
+    box.classList.remove("need-review", "stage-clear"); tag.className = "stage-review-tag";
+    if (wrongCount > 0) { box.classList.add("need-review"); tag.classList.add("tag-warn"); tag.textContent = `重点复盘（本关错 ${wrongCount} 题）`; }
+    else { box.classList.add("stage-clear"); tag.classList.add("tag-ok"); tag.textContent = "本关满分通过"; }
+  }
+}
+function clearSummaryStageHighlights() {
+  for (let stageIdx = 0; stageIdx < 4; stageIdx++) {
+    const box = document.getElementById(`summaryStage${stageIdx}`); const tag = document.getElementById(`stageTag${stageIdx}`);
+    if (box) box.classList.remove("need-review", "stage-clear");
+    if (tag) { tag.className = "stage-review-tag"; tag.textContent = ""; }
+  }
+}
+
+function setMode(mode) {
+  if (currentMode === mode) return;
+  currentMode = mode;
+  document.getElementById("modeExamBtn").classList.toggle("active", mode === "exam");
+  document.getElementById("modeInstantBtn").classList.toggle("active", mode === "instant");
+  resetQuiz();
+}
+function isMultiQuestion(qIdx) { return Array.isArray(questions[qIdx].answer); }
+function startTimer() {
+  clearInterval(timerInterval); startTime = Date.now(); elapsedSeconds = 0; updateTimerDisplay();
+  timerInterval = setInterval(() => { if (!submitted) { elapsedSeconds = Math.floor((Date.now() - startTime) / 1000); updateTimerDisplay(); } }, 1000);
+}
+function formatTime(sec) { return `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`; }
+function updateTimerDisplay() { document.getElementById("timerText").textContent = `用时 ${formatTime(elapsedSeconds)}`; }
+function getRankName(score) { if (score === 100) return "满分大满贯"; if (score >= 90) return "11.6 新品王牌专家"; if (score >= 75) return "新品实操达人"; return "新品潜力新星"; }
+
+function toggleAdminView() {
+  if (adminUnlocked) { adminUnlocked = false; updateAdminUI(); renderLeaderboard(); return; }
+  const pwd = prompt("请输入管理员口令查看全部同事名次：");
+  if (pwd === null) return;
+  if (ADMIN_PASSWORDS.includes(pwd.trim())) { adminUnlocked = true; updateAdminUI(); renderLeaderboard(); } else { alert("管理员口令不正确"); }
+}
+function updateAdminUI() {
+  const badge = document.getElementById("privacyBadge"); const btn = document.getElementById("adminToggleBtn");
+  const exp = document.getElementById("exportCsvBtn"); const add = document.getElementById("manualAddBtn"); const clr = document.getElementById("clearLbBtn");
+  if (adminUnlocked) {
+    badge.textContent = "管理员视角：显示全部名次"; badge.classList.add("admin-active");
+    btn.textContent = "退出管理员视角（隐藏10名后）";
+    exp.style.display = "inline-block"; add.style.display = "inline-block"; clr.style.display = "inline-block";
+  } else {
+    badge.textContent = "公开榜：仅显示前 10 名"; badge.classList.remove("admin-active");
+    btn.textContent = "管理员看全部名次";
+    exp.style.display = "none"; add.style.display = "none"; clr.style.display = "none";
+  }
+}
+
+function escapeHtml(str) { return String(str).replace(/[&<>"']/g, s => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[s])); }
+
+function renderLeaderboard(list) {
+  const container = document.getElementById("lbContent"); const footerNote = document.getElementById("lbFooterNote");
+  if (!list || list.length === 0) { container.innerHTML = `<div class="empty-lb">暂无上榜记录，快输入名字完成第一局 11.6 新品挑战吧</div>`; footerNote.textContent = ""; return; }
+  const displayList = adminUnlocked ? list : list.slice(0, PUBLIC_TOP_LIMIT);
+  let rowsHtml = displayList.map((item, idx) => {
+    const rankNum = idx + 1; const badgeClass = rankNum <= 3 ? `rank-badge rank-${rankNum}` : "rank-badge";
+    return `<tr><td><span class="${badgeClass}">${rankNum}</span></td><td><strong>${escapeHtml(item.name)}</strong></td><td style="color:#0071e3;font-weight:700;">${item.score}分</td><td>${item.rank}</td><td>${formatTime(item.seconds)}</td></tr>`;
+  }).join("");
+  container.innerHTML = `<table class="lb-table"><thead><tr><th>排名</th><th>姓名</th><th>总分</th><th>称号</th><th>用时</th></tr></thead><tbody>${rowsHtml}</tbody></table>`;
+  footerNote.textContent = adminUnlocked ? `管理员模式：当前共 ${list.length} 位同事参与，已展示全部名次` : (list.length > PUBLIC_TOP_LIMIT ? `共 ${list.length} 人参与，为保护隐私公开榜仅展示前 10 名` : `当前共 ${list.length} 人参与（公开榜上限展示前 10 名）`);
+}
+
+function exportAllToCSV() {
+  if (latestCloudData.length === 0) { alert("暂无成绩记录可导出"); return; }
+  const header = ["排名", "姓名", "总分", "称号", "用时(分:秒)", "用时秒数"];
+  const rows = latestCloudData.map((item, idx) => [idx + 1, `"${String(item.name).replace(/"/g, '""')}"`, item.score, item.rank, formatTime(item.seconds), item.seconds]);
+  const csvContent = "\uFEFF" + [header.join(","), ...rows.map(r => r.join(","))].join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a"); a.href = url; a.download = "11.6新品问答全部名次表.csv"; a.click(); URL.revokeObjectURL(url);
+}
+
+async function addManualEntry() {
+  const name = prompt("请输入要补录的同事姓名："); if (!name) return;
+  const scoreStr = prompt("请输入得分（0 到 100）：", "95"); if (scoreStr === null) return;
+  const score = Math.max(0, Math.min(100, parseInt(scoreStr, 10) || 0));
+  const secStr = prompt("请输入用时秒数（例如 90 代表1分30秒）：", "90");
+  const seconds = Math.max(1, parseInt(secStr, 10) || 90);
+  if (!supabaseClient) { alert("网络未连接，无法补录"); return; }
+  const rankName = getRankName(score);
+  const { error } = await supabaseClient.from('leaderboard_1106').insert([{ name: name, score: score, seconds: seconds, rank: rankName }]);
+  if (!error) { await refreshLeaderboard(); } else { alert("补录失败"); }
+}
+
+async function clearLeaderboard() {
+  if (!supabaseClient) return;
+  if (confirm("⚠️ 危险操作：确定要清空云端服务器上的所有成绩吗？所有人都会看到清空后的结果！")) {
+    const { error } = await supabaseClient.from('leaderboard_1106').delete().neq('id', 0);
+    if (!error) { await refreshLeaderboard(); } else { alert("清空失败：" + error.message); }
+  }
+}
+
+function formatAnswerLetters(ans) { return Array.isArray(ans) ? [...ans].sort((a, b) => a - b).map(i => OPTION_LABELS[i]).join("、") : OPTION_LABELS[ans]; }
+
+function renderQuiz() {
+  const container = document.getElementById("quizContainer"); container.innerHTML = "";
+  questions.forEach((item, qIdx) => {
+    const stageIdx = Math.floor(qIdx / 5);
+    if (qIdx % 5 === 0 && STAGE_HEADERS[stageIdx]) {
+      const banner = document.createElement("div"); banner.className = `stage-banner banner-s${stageIdx}`; banner.id = `stage_banner_${stageIdx}`;
+      banner.innerHTML = `<h3>${STAGE_HEADERS[stageIdx].title}</h3><span>${STAGE_HEADERS[stageIdx].sub}</span>`;
+      container.appendChild(banner);
+    }
+    const multi = isMultiQuestion(qIdx); const card = document.createElement("div"); card.className = `q-card stage-theme-${stageIdx}`; card.id = `card_${qIdx}`;
+    const meta = document.createElement("div"); meta.className = "q-meta";
+    const stage = document.createElement("div"); stage.className = "q-stage"; stage.textContent = item.stage;
+    const tagGroup = document.createElement("div"); tagGroup.className = "q-tag-group";
+    const typeTag = document.createElement("span"); typeTag.className = `q-type-tag ${multi ? "tag-multi" : "tag-single"}`; typeTag.textContent = multi ? "多选题（需选出所有正确项）" : "单选题";
+    const scoreTag = document.createElement("span"); scoreTag.className = "q-score-tag"; scoreTag.id = `scoreTag_${qIdx}`;
+    tagGroup.appendChild(typeTag); tagGroup.appendChild(scoreTag);
+    meta.appendChild(stage); meta.appendChild(tagGroup); card.appendChild(meta);
+    const title = document.createElement("div"); title.className = "q-title"; title.textContent = item.q; card.appendChild(title);
+    const optsDiv = document.createElement("div"); optsDiv.className = "options";
+    item.options.forEach((optText, optIdx) => {
+      const btn = document.createElement("button"); btn.className = "option-btn"; btn.onclick = () => selectOption(qIdx, optIdx); btn.id = `q${qIdx}_opt${optIdx}`;
+      const textSpan = document.createElement("span"); textSpan.id = `q${qIdx}_optText${optIdx}`;
+      const prefix = multi ? "☐ " : ""; textSpan.textContent = `${prefix}${OPTION_LABELS[optIdx]}. ${optText}`;
+      const statusSpan = document.createElement("span"); statusSpan.className = "opt-status-label"; statusSpan.id = `q${qIdx}_optStatus${optIdx}`;
+      btn.appendChild(textSpan); btn.appendChild(statusSpan); optsDiv.appendChild(btn);
+    });
+    card.appendChild(optsDiv);
+    if (multi && currentMode === "instant") {
+      const checkBtn = document.createElement("button"); checkBtn.className = "instant-check-btn"; checkBtn.id = `instant_btn_${qIdx}`; checkBtn.style.display = "inline-block"; checkBtn.textContent = "确认本题答案"; checkBtn.onclick = () => revealSingleQuestion(qIdx); card.appendChild(checkBtn);
+    }
+    const explain = document.createElement("div"); explain.className = "explain-box"; explain.id = `explain_${qIdx}`; card.appendChild(explain);
+    container.appendChild(card);
+  });
+}
+
+function revealSingleQuestion(qIdx) {
+  if (!isQuestionAnswered(qIdx)) { alert("请先选择选项"); return; }
+  questionRevealed[qIdx] = true; const item = questions[qIdx]; const isCorrect = checkQuestionCorrect(qIdx); const multi = isMultiQuestion(qIdx); const chosen = userAnswers[qIdx]; const optCount = item.options.length;
+  const card = document.getElementById(`card_${qIdx}`); const scoreTag = document.getElementById(`scoreTag_${qIdx}`); scoreTag.style.display = "inline-block";
+  if (isCorrect) { scoreTag.className = "q-score-tag score-pass"; scoreTag.textContent = "答对 +5分"; card.classList.remove("card-wrong"); }
+  else { scoreTag.className = "q-score-tag score-fail"; scoreTag.textContent = "未得分 0分（有漏选或错选）"; card.classList.add("card-wrong"); }
+  for (let i = 0; i < optCount; i++) {
+    const btn = document.getElementById(`q${qIdx}_opt${i}`); const statusSpan = document.getElementById(`q${qIdx}_optStatus${i}`); btn.classList.remove("selected", "selected-multi");
+    if (multi) {
+      const inAnswer = item.answer.includes(i); const inChosen = chosen.includes(i);
+      if (inAnswer && inChosen) { btn.classList.add("correct"); statusSpan.textContent = "✓ 已选对"; }
+      else if (inAnswer && !inChosen) { btn.classList.add("missed"); statusSpan.textContent = "漏选此项"; }
+      else if (!inAnswer && inChosen) { btn.classList.add("wrong"); statusSpan.textContent = "✗ 错选"; }
+    } else {
+      if (i === item.answer) { btn.classList.add("correct"); statusSpan.textContent = chosen === i ? "✓ 已选对" : "✓ 正确答案"; }
+      else if (i === chosen && chosen !== item.answer) { btn.classList.add("wrong"); statusSpan.textContent = "✗ 你的选择"; }
+    }
+  }
+  const checkBtn = document.getElementById(`instant_btn_${qIdx}`); if (checkBtn) checkBtn.style.display = "none";
+  const explain = document.getElementById(`explain_${qIdx}`); explain.innerHTML = `<strong>你的选择：${formatAnswerLetters(chosen)} ｜ 正确答案：${formatAnswerLetters(item.answer)}</strong><br>${item.tip}`; explain.style.display = "block";
+}
+
+function selectOption(qIdx, optIdx) {
+  if (submitted || questionRevealed[qIdx]) return; const item = questions[qIdx]; const optCount = item.options.length;
+  if (isMultiQuestion(qIdx)) {
+    const arr = userAnswers[qIdx]; const pos = arr.indexOf(optIdx);
+    if (pos === -1) { arr.push(optIdx); playTapSound(true); } else { arr.splice(pos, 1); playTapSound(false); }
+    for (let i = 0; i < optCount; i++) {
+      const btn = document.getElementById(`q${qIdx}_opt${i}`); const textSpan = document.getElementById(`q${qIdx}_optText${i}`); const isChecked = arr.includes(i);
+      btn.classList.toggle("selected-multi", isChecked); textSpan.textContent = `${isChecked ? "☑ " : "☐ "}${OPTION_LABELS[i]}. ${item.options[i]}`;
+    }
+  } else {
+    userAnswers[qIdx] = optIdx; playTapSound(true);
+    for (let i = 0; i < optCount; i++) { document.getElementById(`q${qIdx}_opt${i}`).classList.toggle("selected", i === optIdx); }
+    if (currentMode === "instant") { revealSingleQuestion(qIdx); }
+  }
+  updateProgress();
+}
+function isQuestionAnswered(qIdx) { return isMultiQuestion(qIdx) ? userAnswers[qIdx].length > 0 : userAnswers[qIdx] !== null; }
+function updateProgress() {
+  let count = 0; for (let i = 0; i < questions.length; i++) { if (isQuestionAnswered(i)) count++; }
+  document.getElementById("progressText").textContent = `已答 ${count} / ${questions.length} 题`;
+  document.getElementById("progressFill").style.width = `${(count / questions.length) * 100}%`;
+}
+function checkQuestionCorrect(qIdx) {
+  const expected = questions[qIdx].answer; const chosen = userAnswers[qIdx];
+  if (Array.isArray(expected)) { if (chosen.length !== expected.length) return false; return [...expected].sort().join(",") === [...chosen].sort().join(","); }
+  return chosen === expected;
+}
+
+async function submitQuiz() {
+  const playerNameInput = document.getElementById("playerName"); let playerName = playerNameInput.value.trim();
+  if (!playerName) { playerName = prompt("交卷前请留下你的姓名或昵称（用于上榜排名）：") || "匿名玩家"; playerNameInput.value = playerName; }
+  const unanswered = questions.findIndex((_, idx) => !isQuestionAnswered(idx));
+  if (unanswered !== -1) { alert(`还有第 ${unanswered + 1} 题未作答，全部选完才能出总分`); document.getElementById(`q${unanswered}_opt0`).scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  const singlePickedMulti = questions.findIndex((item, idx) => !questionRevealed[idx] && Array.isArray(item.answer) && userAnswers[idx].length === 1);
+  if (singlePickedMulti !== -1) {
+    const confirmSubmit = confirm(`提醒：第 ${singlePickedMulti + 1} 题是【多选题】，你目前只勾选了 1 个选项，漏选不得分。是否返回补选？（点“取消”返回补选，点“确定”直接交卷）`);
+    if (!confirmSubmit) { document.getElementById(`card_${singlePickedMulti}`).scrollIntoView({ behavior: "smooth", block: "center" }); return; }
+  }
+  submitted = true; clearInterval(timerInterval);
+  const submitBtn = document.getElementById("submitBtn"); submitBtn.disabled = true; submitBtn.textContent = "正在上传成绩...";
+  let score = 0;
+  questions.forEach((item, qIdx) => { if (checkQuestionCorrect(qIdx)) score += 5; revealSingleQuestion(qIdx); });
+  
+  let myRank = -1;
+  if (supabaseClient) {
+    const rankName = getRankName(score);
+    const { error } = await supabaseClient.from('leaderboard_1106').insert([{ name: playerName, score: score, seconds: elapsedSeconds, rank: rankName }]);
+    if (error) { console.error(error); alert('成绩上传失败，请检查网络。'); }
+    else {
+      await refreshLeaderboard();
+      const myRankIdx = latestCloudData.findIndex(item => item.name === playerName && item.score === score && item.seconds === elapsedSeconds);
+      if (myRankIdx !== -1) myRank = myRankIdx + 1;
+    }
+  } else { alert('当前处于离线模式，成绩无法存入云端榜单。'); }
+  
+  highlightSummaryStagesAfterSubmit();
+  const summaryCard = document.getElementById("summaryCard"); const summaryGrid = document.getElementById("summaryGrid"); const summaryArrow = document.getElementById("summaryArrow");
+  summaryCard.style.display = "block"; summaryGrid.classList.add("open"); summaryArrow.textContent = "收起速查 ▲";
+  submitBtn.style.display = "none";
+  
+  const resultBox = document.getElementById("resultBox"); const resultBadge = document.getElementById("resultBadge"); const scoreNum = document.getElementById("scoreNum"); const rankTitle = document.getElementById("rankTitle"); const rankDesc = document.getElementById("rankDesc"); const replayBtn = document.getElementById("replayConfettiBtn");
+  scoreNum.textContent = `${score}分`;
+  if (myRank === -1) { rankTitle.textContent = `${playerName} | 段位：${getRankName(score)}（用时 ${formatTime(elapsedSeconds)}）`; }
+  else { rankTitle.textContent = `${playerName} | 当前第 ${myRank} 名 | 段位：${getRankName(score)}（用时 ${formatTime(elapsedSeconds)}）`; }
+  
+  if (score === 100) {
+    resultBox.classList.add("perfect-score"); resultBadge.textContent = "满分大满贯达成"; resultBadge.style.background = "#fff3e0"; resultBadge.style.color = "#ff9500";
+    rankDesc.textContent = "20道题全部答对，11.6 开售四大新品的核心参数与对客金句已全部掌握，随时上场接待顾客";
+    replayBtn.style.display = "inline-block"; launchFullCelebration();
+  } else {
+    playStandardSubmitAudio(score); resultBox.classList.remove("perfect-score");
+    resultBadge.textContent = "本局战绩已出"; resultBadge.style.background = "#e8f2ff"; resultBadge.style.color = "#0071e3";
+    replayBtn.style.display = "none";
+    if (score >= 90) rankDesc.textContent = "王牌水准，下方已为你解锁【四大新品核心速查卡】并标黄待复盘模块，看完就能冲 100 分";
+    else if (score >= 75) rankDesc.textContent = "核心亮点掌握很稳，下方已展开【核心速查卡】并标出失分产品线，对照错题复盘最快";
+    else rankDesc.textContent = "下方已解锁【四大新品核心速查卡】，建议先重点看标黄的产品模块，再来刷一次题轻松过关";
+  }
+  resultBox.style.display = "block"; window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function resetQuiz() {
+  stopConfetti(); submitted = false; adminUnlocked = false; updateAdminUI(); clearSummaryStageHighlights();
+  for (let i = 0; i < questions.length; i++) { userAnswers[i] = isMultiQuestion(i) ? [] : null; questionRevealed[i] = false; }
+  document.getElementById("playerName").value = ""; document.getElementById("resultBox").style.display = "none"; document.getElementById("summaryCard").style.display = "none";
+  const submitBtn = document.getElementById("submitBtn"); submitBtn.style.display = "inline-block"; submitBtn.disabled = false; submitBtn.textContent = "提交试卷并冲榜";
+  renderLeaderboard(latestCloudData); renderQuiz(); updateProgress(); startTimer(); window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ==========================================
+// 云端与数据逻辑 (动态加载，绝不影响页面渲染)
+// ==========================================
+async function refreshLeaderboard() {
+  if (!supabaseClient) return;
+  try {
+    const { data, error } = await supabaseClient.from('leaderboard_1106').select('*').order('score', { ascending: false }).order('seconds', { ascending: true }).limit(100);
+    if (error) throw error;
+    latestCloudData = data || [];
+    renderLeaderboard(latestCloudData);
+  } catch (e) {
+    console.error("拉取排行榜失败:", e);
+    document.getElementById("lbContent").innerHTML = `<div class="empty-lb" style="color:var(--danger)">连接云端失败，请刷新重试</div>`;
+  }
+}
+
+// 启动
+document.addEventListener("DOMContentLoaded", () => {
+  renderQuiz();
+  startTimer();
+  document.getElementById("lbContent").innerHTML = '<div class="empty-lb">正在下载云端组件...</div>';
+  const script = document.createElement('script');
+  script.src = 'https://unpkg.com/@supabase/supabase-js@2.39.3/dist/umd/supabase.js';
+  script.onload = () => {
+    try {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      refreshLeaderboard();
+      setInterval(() => { if (!submitted) refreshLeaderboard(); }, 10000);
+    } catch(e) { document.getElementById("lbContent").innerHTML = '<div class="empty-lb" style="color:var(--danger)">云端组件初始化失败</div>'; }
+  };
+  script.onerror = () => { document.getElementById("lbContent").innerHTML = '<div class="empty-lb" style="color:var(--danger)">网络较差，云端组件下载失败</div>'; };
+  document.head.appendChild(script);
+});
+</script>
+</body>
+</html>
