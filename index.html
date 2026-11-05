@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Apple Intelligence 头号玩家：20题闯关榜</title>
 <style>
-:root{--bg:#f5f5f7;--card:#ffffff;--text:#1d1d1f;--subtext:#6e6e73;--accent:#0071e3;--accent-soft:#e8f2ff;--multi:#af52de;--multi-soft:#f5ebff;--success:#28cd41;--danger:#ff3b30;--border:#d2d2d7;}
+:root{--bg:#f5f5f7;--card:#ffffff;--text:#1d1d1f;--subtext:#6e6e73;--accent:#0071e3;--accent-soft:#e8f2ff;--multi:#af52de;--success:#28cd41;--danger:#ff3b30;--border:#d2d2d7;}
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","PingFang SC","Helvetica Neue",sans-serif;}
 body{background:var(--bg);color:var(--text);line-height:1.55;padding:24px 16px 60px;font-size:16px;}
 #confettiCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;pointer-events:none;z-index:9999;}
@@ -70,9 +70,6 @@ body{background:var(--bg);color:var(--text);line-height:1.55;padding:24px 16px 6
 .tag-single{background:rgba(255,255,255,0.85);color:var(--accent);border:1px solid rgba(0,113,227,0.25);}
 .tag-multi{background:#af52de;color:#ffffff;}
 .q-title{font-size:19px;font-weight:600;margin-bottom:14px;line-height:1.45;}
-.q-image-wrap{margin-bottom:16px;text-align:center;}
-.q-image{max-width:100%;max-height:360px;border-radius:14px;border:1px solid rgba(0,0,0,0.08);box-shadow:0 4px 14px rgba(0,0,0,0.06);object-fit:contain;background:#fff;cursor:zoom-in;}
-.q-admin-img-bar{display:none;margin-bottom:12px;gap:8px;align-items:center;}
 .options{display:flex;flex-direction:column;gap:12px;}
 .option-btn{text-align:left;background:rgba(255,255,255,0.92);border:2px solid rgba(0,0,0,0.05);border-radius:12px;padding:14px 16px;font-size:16px;line-height:1.45;color:var(--text);cursor:pointer;transition:all 0.15s ease;}
 .option-btn:hover{background:#ffffff;border-color:rgba(0,0,0,0.15);}
@@ -95,23 +92,16 @@ body{background:var(--bg);color:var(--text);line-height:1.55;padding:24px 16px 6
 .rank-desc{font-size:16px;color:var(--subtext);margin-bottom:22px;}
 .result-btn-group{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
 .btn-celebrate{background:linear-gradient(135deg,#ff2d55,#ff9500);color:#fff;border:none;border-radius:999px;padding:15px 28px;font-size:17px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(255,45,85,0.3);}
-.img-lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:10000;align-items:center;justify-content:center;padding:24px;cursor:zoom-out;}
-.img-lightbox img{max-width:94vw;max-height:90vh;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,0.5);}
 </style>
 </head>
 <body>
 <canvas id="confettiCanvas"></canvas>
-<input type="file" id="hiddenImgInput" accept="image/*" style="display:none;" />
-<div class="img-lightbox" id="imgLightbox" onclick="this.style.display='none'">
-<img id="lightboxImg" src="" alt="题目配图预览" />
-</div>
 
 <div class="container">
 <div class="hero">
 <div class="hero-top">
 <div class="badge">中国大陆版Apple Intelligence</div>
 <div class="hero-top-actions">
-<!-- 这里删掉了扫码按钮，只保留了音效开关 -->
 <button class="sound-toggle" id="soundToggleBtn" onclick="toggleSound()">音效：已开启</button>
 </div>
 </div>
@@ -125,7 +115,7 @@ body{background:var(--bg);color:var(--text);line-height:1.55;padding:24px 16px 6
 <span class="lb-privacy-tag" id="lbModeTag">公开榜：仅显示前 10 名</span>
 </div>
 <div class="lb-actions">
-<button class="btn-small admin-btn" id="adminToggleBtn" onclick="toggleAdminView()">管理员看全部名次/配图</button>
+<button class="btn-small admin-btn" id="adminToggleBtn" onclick="toggleAdminView()">管理员看全部名次</button>
 <button class="btn-small" id="manualAddBtn" style="display:none;" onclick="addManualEntry()">手动补录成绩</button>
 <button class="btn-small" id="exportCsvBtn" style="display:none;" onclick="exportLeaderboardCsv()">导出全部表格</button>
 <button class="btn-small" id="clearLbBtn" style="display:none;" onclick="clearLeaderboard()">清空云端榜单</button>
@@ -167,44 +157,38 @@ body{background:var(--bg);color:var(--text);line-height:1.55;padding:24px 16px 6
 </div>
 </div>
 
-<!-- 引入 Supabase 客户端库 -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-// ==========================================
-// 已经为你填好了你的网址和密钥，无需修改！
-// ==========================================
 const SUPABASE_URL = 'https://ityoclhvzhmihgwahkpv.supabase.co'; 
-const SUPABASE_ANON_KEY = 'sb_publishable_vrqOcMQ_0WHLbCoYMqdH7Q_g7uMUoHS'; 
-// ==========================================
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml0eW9jbGh2emhtaWhnd2Foa3B2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM4NjQ3NTEsImV4cCI6MjEwOTQ0MDc1MX0.b_J9P7RlCGWy0KB0q3YWMZmyX1R7ISyCoVIpNnEcueU'; 
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const ADMIN_PIN = "8888";
-let latestCloudData = []; // 暂存最新数据供导出使用
+let latestCloudData = []; 
 
 const questions = [
-{stage: "第一关：高情商嘴替局（写作与沟通）",q: "1. 【多选】顾客写邮件或发信息时想快速调整行文语气，写作工具提供了哪几种预设语气？",image: "",options: ["专业", "浮夸", "简洁", "俏皮", "友好"],answer: [0, 2, 4],tip: "分享话术（Show Feature）：不管是给同事发邮件还是给朋友发信息，轻点一下就能在专业、简洁、友好三种语气间切换"},
-{stage: "第一关：高情商嘴替局（写作与沟通）",q: "2. 顾客问写作工具能不能在平时常用的第三方 App 里使用，正确的回答是？",image: "",options: ["仅限备忘录和邮件使用", "需要付费订阅才能在第三方使用", "几乎在任何输入文字的地方（包括第三方 App）都能轻点使用", "只有Apple 自带软件才能使用"],answer: 2,tip: "分享话术（Show Feature）：几乎在任何输入文字的地方，包括常用的第三方 App，点一下就能改写、校对和出摘要"},
-{stage: "第一关：高情商嘴替局（写作与沟通）",q: "3. 顾客担心用写作工具改完文字后找不到自己原来写的初稿，怎么帮顾客打消顾虑？",image: "",options: ["改写前必须先手动复制一份", "原稿会自动保存到相册里", "建议内容直接显示在草稿正文中，可轻松选用、继续润色或直接换回原稿", "一旦点击改写就无法恢复"],answer: 2,tip: "分享话术（Show Feature）：建议内容直接在草稿里展示，不满意随时一键退回原稿，创作完全由你掌控"},
-{stage: "第一关：高情商嘴替局（写作与沟通）",q: "4. 顾客手机每天收到上百条通知看不过来，Apple 智能在锁屏上怎么帮他抓重点？",image: "",options: ["自动删除所有不重要的通知", "通过首要通知将最重要的通知置顶，并以通知摘要形式显示要点", "把所有通知都在晚上通知", "只允许通讯录联系人发通知"],answer: 1,tip: "分享话术（Show Feature）：首要通知会把最紧急的事置顶，锁屏通知摘要让你扫一眼甚至听语音播报就能掌握重点"},
-{stage: "第一关：高情商嘴替局（写作与沟通）",q: "5. 在邮件 App 中，哪个新增板块会将具有时效性、最紧急的邮件置于收件箱顶部？",image: "",options: ["星标邮件", "置顶快讯", "优先邮件", "今日必读"],answer: 2,tip: "分享话术（Show Feature）：优先邮件板块会把赶时间的紧急邮件直接放最上面，配合智能回复几秒钟就能处理完"},
-{stage: "第一关：高情商嘴替局（写作与沟通）",q: "6. 【多选】关于邮件、信息和通知的 Apple 智能功能，以下哪些向顾客的介绍是正确的？",image: "",options: ["通知摘要只能在锁屏看文字，不支持语音播报收听", "邮件 App 的“优先邮件”会将具有时效性的紧急邮件置顶，并支持在收件箱和邮件串显示摘要", "信息 App 会显示对话要点的摘要，方便快速浏览长对话", "邮件和信息都支持借助“智能回复”快速编写回复"],answer: [1, 2, 3],tip: "分享话术（Show Feature）：优先邮件置顶、信息对话出摘要、智能回复秒回，而且无论看屏幕还是听语音播报都能快速掌握通知重点"},
-{stage: "第二关：脑洞表情包工厂（智绘表情）",q: "7. 顾客想在聊天时发一个“小狗徒步”的全新表情符号，最直接的操作方式是？",image: "",options: ["通过社交媒体搜索图片再保存", "直接从键盘输入“小狗徒步”描述，现场创建智绘表情", "只能在电脑上用专业软件画", "去 App Store 买表情包插件"],answer: 1,tip: "分享话术（Show Feature）：不用到处存图，直接在键盘输入简短描述，应景的全新智绘表情马上生成"},
-{stage: "第二关：脑洞表情包工厂（智绘表情）",q: "8. 顾客想根据朋友的相貌制作一个“举着香槟杯庆祝的朋友”的智绘表情，前提是什么？",image: "",options: ["照片图库中有已标记姓名的该联系人", "必须现场重新拍一张证件照", "需要对方手机也同时在线", "只能使用系统自带卡通头像"],answer: 0,tip: "分享话术（Show Feature）：只要照片图库中有已标记姓名的联系人，就能根据对方的相貌生成专属智绘表情"},
-{stage: "第二关：脑洞表情包工厂（智绘表情）",q: "9. 【多选】顾客在键盘上创建好全新的“智绘表情”后，可以通过哪些方式使用和分享？",image: "",options: ["在输入文字时将它们直接穿插在正文中", "作为贴纸进行分享", "只能保存成静态手机壁纸", "作为点回（Tapback）进行分享"],answer: [0, 1, 3],tip: "分享话术（Show Feature）：智绘表情既能在打字时直接穿插在正文里，也能作为贴纸和点回进行分享"},
-{stage: "第三关：废片拯救大师（照片与回忆影片）",q: "10. 顾客相册里有几万张照片和视频，想找“Lucy 今年在海滩”的画面，该怎么向他演示？",image: "",options: ["按月份一页页往下翻", "直接用自然语言输入“Lucy 今年在海滩”，不仅能找照片还能直接定位视频中的特定时刻", "只能通过拍照的相机型号搜索", "只能搜“大海”这种单个词，不支持输入完整句子"],answer: 1,tip: "分享话术（Show Feature）：用平时说话的方式描述完整场景就行，连长视频里的具体某一秒画面都能直接帮你揪出来"},
-{stage: "第三关：废片拯救大师（照片与回忆影片）",q: "11. 顾客拍的旅游照背景里有路人和杂物，照片 App 里的什么工具可以处理？",image: "",options: ["涂鸦画笔遮盖", "消除工具，自动识别背景干扰物，轻点即可去除且忠于原图", "只能裁剪掉一半画面", "通过第三方app消除"],answer: 1,tip: "分享话术（Show Feature）：不用下修图软件，相册自带消除工具，点一下路人就消失，而且画面自然忠于原图"},
-{stage: "第三关：废片拯救大师（照片与回忆影片）",q: "12. 【多选】顾客想用照片 App 创作一部“学习钓鱼”的回忆影片，他可以通过哪些方式掌控创作？",image: "",options: ["输入“学习钓鱼”主题，照片 App 会自动解析挑选包含水、码头、钓鱼竿和鱼的照片", "必须自己手动耗费数小时逐帧剪辑", "提供故事指引，例如指定以“钓到大鱼”来结束回忆", "添加心情，或直接挑选特定的音乐风格和歌曲来掌控配乐"],answer: [0, 2, 3],tip: "分享话术（Show Feature）：只要输入主题、故事结局并挑选心情或音乐风格，照片 App 就会根据描述自动完成创作回忆影片的全部工作"},
-{stage: "第三关：废片拯救大师（照片与回忆影片）",q: "13. 顾客想要使用照片App中“拓展”去改变构图，可以做到吗？",image: "",options: ["是", "否"],answer: 1,tip: "备注说明：该功能在 WWDC26 上公布，暂未包含在本次中国大陆版 Apple Intelligence 更新中。目前照片 App 支持自然语言搜图与视频片段、消除工具及回忆影片，向顾客分享时请以本次已上线功能为准"},
-{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "14. 通过“相机控制”使用视觉智能快速了解身边的事物和地点，支持哪些机型？",image: "",options: ["所有 iPhone 机型", "仅限 iPad mini", "iPhone 16 产品系列及后续机型", "仅限 Mac 电脑"],answer: 2,tip: "分享话术（Show Feature）：在 iPhone 16 系列及后续机型上，借助相机控制就能秒开视觉智能，对准身边事物一拍即识"},
-{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "15. 在中国大陆的视觉智能中，顾客可以使用哪项本土图片搜索服务？",image: "",options: ["百度图片搜索（此时适用百度的数据使用政策）", "仅支持纯英文词典查询", "不支持任何图片搜索", "只能识别二维码"],answer: 0,tip: "分享话术（Show Feature）：视觉智能直接集成了大家熟悉的百度图片搜索，看到不认识的东西一按就能搜出来"},
-{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "16. 顾客在图书馆或开会时不方便出声说话，焕然一新的 Siri 怎么满足他的需求？",image: "",options: ["必须大声喊才能唤醒", "静音模式下 Siri 会自动关闭", "只能发短信给客服", "可以在打字和语音交流之间流畅切换，并且具备更丰富的产品知识"],answer: 3,tip: "分享话术（Show Feature）：现在的 Siri 既能语音聊也能随时打字问，手机怎么设置不懂的直接打字问它就行"},
-{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "17. Apple 正在将阿里巴巴的“千问”集成到哪个系统版本的各项体验中？",image: "",options: ["iOS 15", "仅限 watchOS", "iOS 27", "仅限 tvOS"],answer: 2,tip: "分享话术（Show Feature）：Apple 正在将阿里巴巴的千问深度集成到 iOS 27 体验中，本土知识库更懂中国用户"},
-{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "18. 【多选】关于 iOS 27 集成阿里巴巴“千问”的体验，以下哪些说法是准确的？",image: "",options: ["千问会在不提示用户的情况下自动后台共享所有个人数据", "可以直接在 Siri 中利用千问的广博知识和专业特长", "可以直接在写作工具中利用千问，无需在不同工具之间来回切换", "用户可以掌控使用千问的时机，在共享任何信息之前系统都会向用户确认"],answer: [1, 2, 3],tip: "分享话术（Show Feature）：在 Siri 和写作工具里就能直接用千问，不用来回切软件，而且每次共享信息前系统都会向你确认"},
-{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "19. 得益于 Apple 智能，焕然一新的 Siri 具备哪些核心升级？",image: "",options: ["更自然、更契合情境、更懂你，具有更出色的对话能力和更丰富的产品知识", "只能设定闹钟和打电话", "取消了语音功能只能打字", "更自然、更契合情境、更懂你，但仅支持语音对话且不具备 Apple 产品知识"],answer: 0,tip: "分享话术（Show Feature）：Siri 不仅更懂上下文情境，还具备丰富的 Apple 产品知识，并支持在打字和语音交流之间流畅切换"},
-{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "20. 贯穿整个 Apple 智能每一项功能的核心设计理念是什么？",image: "",options: ["广告精准推荐", "强制云端公开分享", "只追求参数跑分", "隐私保护是每项功能的核心设计理念，由用户自行决定如何以及何时使用"],answer: 3,tip: "分享话术（Show Feature）：隐私是我们一贯坚持的底线，所有智能功能都围绕隐私保护设计，控制权永远在你手里"}
+{stage: "第一关：高情商嘴替局（写作与沟通）",q: "1. 【多选】顾客写邮件或发信息时想快速调整行文语气，写作工具提供了哪几种预设语气？",options: ["专业", "浮夸", "简洁", "俏皮", "友好"],answer: [0, 2, 4],tip: "分享话术（Show Feature）：不管是给同事发邮件还是给朋友发信息，轻点一下就能在专业、简洁、友好三种语气间切换"},
+{stage: "第一关：高情商嘴替局（写作与沟通）",q: "2. 顾客问写作工具能不能在平时常用的第三方 App 里使用，正确的回答是？",options: ["仅限备忘录和邮件使用", "需要付费订阅才能在第三方使用", "几乎在任何输入文字的地方（包括第三方 App）都能轻点使用", "只有Apple 自带软件才能使用"],answer: 2,tip: "分享话术（Show Feature）：几乎在任何输入文字的地方，包括常用的第三方 App，点一下就能改写、校对和出摘要"},
+{stage: "第一关：高情商嘴替局（写作与沟通）",q: "3. 顾客担心用写作工具改完文字后找不到自己原来写的初稿，怎么帮顾客打消顾虑？",options: ["改写前必须先手动复制一份", "原稿会自动保存到相册里", "建议内容直接显示在草稿正文中，可轻松选用、继续润色或直接换回原稿", "一旦点击改写就无法恢复"],answer: 2,tip: "分享话术（Show Feature）：建议内容直接在草稿里展示，不满意随时一键退回原稿，创作完全由你掌控"},
+{stage: "第一关：高情商嘴替局（写作与沟通）",q: "4. 顾客手机每天收到上百条通知看不过来，Apple 智能在锁屏上怎么帮他抓重点？",options: ["自动删除所有不重要的通知", "通过首要通知将最重要的通知置顶，并以通知摘要形式显示要点", "把所有通知都在晚上通知", "只允许通讯录联系人发通知"],answer: 1,tip: "分享话术（Show Feature）：首要通知会把最紧急的事置顶，锁屏通知摘要让你扫一眼甚至听语音播报就能掌握重点"},
+{stage: "第一关：高情商嘴替局（写作与沟通）",q: "5. 在邮件 App 中，哪个新增板块会将具有时效性、最紧急的邮件置于收件箱顶部？",options: ["星标邮件", "置顶快讯", "优先邮件", "今日必读"],answer: 2,tip: "分享话术（Show Feature）：优先邮件板块会把赶时间的紧急邮件直接放最上面，配合智能回复几秒钟就能处理完"},
+{stage: "第一关：高情商嘴替局（写作与沟通）",q: "6. 【多选】关于邮件、信息和通知的 Apple 智能功能，以下哪些向顾客的介绍是正确的？",options: ["通知摘要只能在锁屏看文字，不支持语音播报收听", "邮件 App 的“优先邮件”会将具有时效性的紧急邮件置顶，并支持在收件箱和邮件串显示摘要", "信息 App 会显示对话要点的摘要，方便快速浏览长对话", "邮件和信息都支持借助“智能回复”快速编写回复"],answer: [1, 2, 3],tip: "分享话术（Show Feature）：优先邮件置顶、信息对话出摘要、智能回复秒回，而且无论看屏幕还是听语音播报都能快速掌握通知重点"},
+{stage: "第二关：脑洞表情包工厂（智绘表情）",q: "7. 顾客想在聊天时发一个“小狗徒步”的全新表情符号，最直接的操作方式是？",options: ["通过社交媒体搜索图片再保存", "直接从键盘输入“小狗徒步”描述，现场创建智绘表情", "只能在电脑上用专业软件画", "去 App Store 买表情包插件"],answer: 1,tip: "分享话术（Show Feature）：不用到处存图，直接在键盘输入简短描述，应景的全新智绘表情马上生成"},
+{stage: "第二关：脑洞表情包工厂（智绘表情）",q: "8. 顾客想根据朋友的相貌制作一个“举着香槟杯庆祝的朋友”的智绘表情，前提是什么？",options: ["照片图库中有已标记姓名的该联系人", "必须现场重新拍一张证件照", "需要对方手机也同时在线", "只能使用系统自带卡通头像"],answer: 0,tip: "分享话术（Show Feature）：只要照片图库中有已标记姓名的联系人，就能根据对方的相貌生成专属智绘表情"},
+{stage: "第二关：脑洞表情包工厂（智绘表情）",q: "9. 【多选】顾客在键盘上创建好全新的“智绘表情”后，可以通过哪些方式使用和分享？",options: ["在输入文字时将它们直接穿插在正文中", "作为贴纸进行分享", "只能保存成静态手机壁纸", "作为点回（Tapback）进行分享"],answer: [0, 1, 3],tip: "分享话术（Show Feature）：智绘表情既能在打字时直接穿插在正文里，也能作为贴纸和点回进行分享"},
+{stage: "第三关：废片拯救大师（照片与回忆影片）",q: "10. 顾客相册里有几万张照片和视频，想找“Lucy 今年在海滩”的画面，该怎么向他演示？",options: ["按月份一页页往下翻", "直接用自然语言输入“Lucy 今年在海滩”，不仅能找照片还能直接定位视频中的特定时刻", "只能通过拍照的相机型号搜索", "只能搜“大海”这种单个词，不支持输入完整句子"],answer: 1,tip: "分享话术（Show Feature）：用平时说话的方式描述完整场景就行，连长视频里的具体某一秒画面都能直接帮你揪出来"},
+{stage: "第三关：废片拯救大师（照片与回忆影片）",q: "11. 顾客拍的旅游照背景里有路人和杂物，照片 App 里的什么工具可以处理？",options: ["涂鸦画笔遮盖", "消除工具，自动识别背景干扰物，轻点即可去除且忠于原图", "只能裁剪掉一半画面", "通过第三方app消除"],answer: 1,tip: "分享话术（Show Feature）：不用下修图软件，相册自带消除工具，点一下路人就消失，而且画面自然忠于原图"},
+{stage: "第三关：废片拯救大师（照片与回忆影片）",q: "12. 【多选】顾客想用照片 App 创作一部“学习钓鱼”的回忆影片，他可以通过哪些方式掌控创作？",options: ["输入“学习钓鱼”主题，照片 App 会自动解析挑选包含水、码头、钓鱼竿和鱼的照片", "必须自己手动耗费数小时逐帧剪辑", "提供故事指引，例如指定以“钓到大鱼”来结束回忆", "添加心情，或直接挑选特定的音乐风格和歌曲来掌控配乐"],answer: [0, 2, 3],tip: "分享话术（Show Feature）：只要输入主题、故事结局并挑选心情或音乐风格，照片 App 就会根据描述自动完成创作回忆影片的全部工作"},
+{stage: "第三关：废片拯救大师（照片与回忆影片）",q: "13. 顾客想要使用照片App中“拓展”去改变构图，可以做到吗？",options: ["是", "否"],answer: 1,tip: "备注说明：该功能在 WWDC26 上公布，暂未包含在本次中国大陆版 Apple Intelligence 更新中。目前照片 App 支持自然语言搜图与视频片段、消除工具及回忆影片，向顾客分享时请以本次已上线功能为准"},
+{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "14. 通过“相机控制”使用视觉智能快速了解身边的事物和地点，支持哪些机型？",options: ["所有 iPhone 机型", "仅限 iPad mini", "iPhone 16 产品系列及后续机型", "仅限 Mac 电脑"],answer: 2,tip: "分享话术（Show Feature）：在 iPhone 16 系列及后续机型上，借助相机控制就能秒开视觉智能，对准身边事物一拍即识"},
+{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "15. 在中国大陆的视觉智能中，顾客可以使用哪项本土图片搜索服务？",options: ["百度图片搜索（此时适用百度的数据使用政策）", "仅支持纯英文词典查询", "不支持任何图片搜索", "只能识别二维码"],answer: 0,tip: "分享话术（Show Feature）：视觉智能直接集成了大家熟悉的百度图片搜索，看到不认识的东西一按就能搜出来"},
+{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "16. 顾客在图书馆或开会时不方便出声说话，焕然一新的 Siri 怎么满足他的需求？",options: ["必须大声喊才能唤醒", "静音模式下 Siri 会自动关闭", "只能发短信给客服", "可以在打字和语音交流之间流畅切换，并且具备更丰富的产品知识"],answer: 3,tip: "分享话术（Show Feature）：现在的 Siri 既能语音聊也能随时打字问，手机怎么设置不懂的直接打字问它就行"},
+{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "17. Apple 正在将阿里巴巴的“千问”集成到哪个系统版本的各项体验中？",options: ["iOS 15", "仅限 watchOS", "iOS 27", "仅限 tvOS"],answer: 2,tip: "分享话术（Show Feature）：Apple 正在将阿里巴巴的千问深度集成到 iOS 27 体验中，本土知识库更懂中国用户"},
+{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "18. 【多选】关于 iOS 27 集成阿里巴巴“千问”的体验，以下哪些说法是准确的？",options: ["千问会在不提示用户的情况下自动后台共享所有个人数据", "可以直接在 Siri 中利用千问的广博知识和专业特长", "可以直接在写作工具中利用千问，无需在不同工具之间来回切换", "用户可以掌控使用千问的时机，在共享任何信息之前系统都会向用户确认"],answer: [1, 2, 3],tip: "分享话术（Show Feature）：在 Siri 和写作工具里就能直接用千问，不用来回切软件，而且每次共享信息前系统都会向你确认"},
+{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "19. 得益于 Apple 智能，焕然一新的 Siri 具备哪些核心升级？",options: ["更自然、更契合情境、更懂你，具有更出色的对话能力和更丰富的产品知识", "只能设定闹钟和打电话", "取消了语音功能只能打字", "更自然、更契合情境、更懂你，但仅支持语音对话且不具备 Apple 产品知识"],answer: 0,tip: "分享话术（Show Feature）：Siri 不仅更懂上下文情境，还具备丰富的 Apple 产品知识，并支持在打字和语音交流之间流畅切换"},
+{stage: "第四关：火眼金睛与本土王牌（视觉智能、Siri与千问）",q: "20. 贯穿整个 Apple 智能每一项功能的核心设计理念是什么？",options: ["广告精准推荐", "强制云端公开分享", "只追求参数跑分", "隐私保护是每项功能的核心设计理念，由用户自行决定如何以及何时使用"],answer: 3,tip: "分享话术（Show Feature）：隐私是我们一贯坚持的底线，所有智能功能都围绕隐私保护设计，控制权永远在你手里"}
 ];
 const OPTION_LABELS = ["A", "B", "C", "D", "E", "F", "G", "H"];
-const IMG_STORAGE_KEY = "apple_intelligence_cn_q_images_v1";
 const userAnswers = questions.map(q => Array.isArray(q.answer) ? [] : null);
 const questionRevealed = new Array(questions.length).fill(false);
 let quizMode = "exam";
@@ -214,58 +198,6 @@ let soundEnabled = true;
 let startTime = Date.now();
 let elapsedSeconds = 0;
 let timerInterval = null;
-let currentEditingImgQIdx = null;
-
-// 原有的 openQrModal 函数已被完全移除
-
-function loadSavedQuestionImages() {
-    try { const raw = localStorage.getItem(IMG_STORAGE_KEY); return raw ? JSON.parse(raw) : {}; } catch (e) { return {}; }
-}
-function saveQuestionImage(qIdx, dataUrl) {
-    try {
-        const map = loadSavedQuestionImages();
-        if (dataUrl) { map[qIdx] = dataUrl; } else { delete map[qIdx]; }
-        localStorage.setItem(IMG_STORAGE_KEY, JSON.stringify(map));
-    } catch (e) { alert("图片保存失败，可能是本地存储空间已满"); }
-}
-function getQuestionImageSrc(qIdx) {
-    const savedMap = loadSavedQuestionImages();
-    if (savedMap[qIdx]) return savedMap[qIdx];
-    return questions[qIdx].image || "";
-}
-function openImagePickerForQuestion(qIdx) {
-    currentEditingImgQIdx = qIdx;
-    const input = document.getElementById("hiddenImgInput");
-    input.value = "";
-    input.click();
-}
-document.getElementById("hiddenImgInput").addEventListener("change", function(e) {
-    const file = e.target.files && e.target.files[0];
-    if (!file || currentEditingImgQIdx === null) return;
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-        const img = new Image();
-        img.onload = function() {
-            const maxW = 1000; let w = img.width; let h = img.height;
-            if (w > maxW) { h = Math.round((h * maxW) / w); w = maxW; }
-            const c = document.createElement("canvas"); c.width = w; c.height = h;
-            c.getContext("2d").drawImage(img, 0, 0, w, h);
-            saveQuestionImage(currentEditingImgQIdx, c.toDataURL("image/jpeg", 0.85));
-            renderQuiz();
-        };
-        img.src = evt.target.result;
-    };
-    reader.readAsDataURL(file);
-});
-function removeQuestionImage(qIdx) { questions[qIdx].image = ""; saveQuestionImage(qIdx, ""); renderQuiz(); }
-function previewLightbox(src) { document.getElementById("lightboxImg").src = src; document.getElementById("imgLightbox").style.display = "flex"; }
-function getStageThemeNum(stageStr) {
-    if (stageStr.includes("第一关")) return 1;
-    if (stageStr.includes("第二关")) return 2;
-    if (stageStr.includes("第三关")) return 3;
-    if (stageStr.includes("第四关")) return 4;
-    return 1;
-}
 
 // 音效逻辑
 let audioCtx = null;
@@ -397,10 +329,10 @@ async function addScoreToCloud(name, score, seconds) {
 }
 
 function toggleAdminView() {
-    if (isAdminView) { isAdminView = false; updateAdminUI(); renderLeaderboard(latestCloudData); renderQuiz(); return; }
-    const pin = prompt("请输入管理员口令（解锁全部名次及题目配图上传）：");
+    if (isAdminView) { isAdminView = false; updateAdminUI(); renderLeaderboard(latestCloudData); return; }
+    const pin = prompt("请输入管理员口令（解锁全部名次）：");
     if (pin === null) return;
-    if (pin.trim() === ADMIN_PIN) { isAdminView = true; updateAdminUI(); renderLeaderboard(latestCloudData); renderQuiz(); } else { alert("管理员口令不正确"); }
+    if (pin.trim() === ADMIN_PIN) { isAdminView = true; updateAdminUI(); renderLeaderboard(latestCloudData); } else { alert("管理员口令不正确"); }
 }
 
 function updateAdminUI() {
@@ -412,7 +344,7 @@ function updateAdminUI() {
         toggleBtn.textContent = "退出管理员视角"; manualBtn.style.display = "inline-block"; exportBtn.style.display = "inline-block"; clearBtn.style.display = "inline-block";
     } else {
         modeTag.textContent = "公开榜：仅显示前 10 名"; modeTag.classList.remove("admin-active");
-        toggleBtn.textContent = "管理员看全部名次/配图"; manualBtn.style.display = "none"; exportBtn.style.display = "none"; clearBtn.style.display = "none";
+        toggleBtn.textContent = "管理员看全部名次"; manualBtn.style.display = "none"; exportBtn.style.display = "none"; clearBtn.style.display = "none";
     }
 }
 
@@ -517,16 +449,6 @@ function renderQuiz() {
         const typeTag = document.createElement("span"); typeTag.className = `q-type-tag ${multi ? "tag-multi" : "tag-single"}`; typeTag.textContent = multi ? "多选题" : "单选题";
         meta.appendChild(stage); meta.appendChild(typeTag); card.appendChild(meta);
         const title = document.createElement("div"); title.className = "q-title"; title.textContent = item.q; card.appendChild(title);
-        
-        if (isAdminView) {
-            const bar = document.createElement("div"); bar.className = "q-admin-img-bar"; bar.style.display = "flex";
-            const upBtn = document.createElement("button"); upBtn.className = "btn-small admin-btn"; upBtn.textContent = getQuestionImageSrc(qIdx) ? "更换照片" : "添加照片"; upBtn.onclick = () => openImagePickerForQuestion(qIdx); bar.appendChild(upBtn);
-            if (getQuestionImageSrc(qIdx)) { const delBtn = document.createElement("button"); delBtn.className = "btn-small"; delBtn.textContent = "移除"; delBtn.onclick = () => removeQuestionImage(qIdx); bar.appendChild(delBtn); }
-            card.appendChild(bar);
-        }
-        
-        const imgSrc = getQuestionImageSrc(qIdx);
-        if (imgSrc) { const wrap = document.createElement("div"); wrap.className = "q-image-wrap"; const el = document.createElement("img"); el.className = "q-image"; el.src = imgSrc; el.onclick = () => previewLightbox(imgSrc); wrap.appendChild(el); card.appendChild(wrap); }
         
         const opts = document.createElement("div"); opts.className = "options";
         item.options.forEach((txt, optIdx) => {
